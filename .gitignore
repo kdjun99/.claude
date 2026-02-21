@@ -1,0 +1,19 @@
+# Ignore everything by default
+*
+
+# Track configuration
+!CLAUDE.md
+
+# Track commands, skills, agents
+!commands/
+!commands/**
+!skills/
+!skills/**
+!agents/
+!agents/**
+
+# Track .gitignore itself
+!.gitignore
+
+# Always ignore .DS_Store
+.DS_Store
