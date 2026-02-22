@@ -1,7 +1,7 @@
 ---
 name: pipeline-architect
 description: Designs pipeline component structure (Commands/Agents/Skills) from process analysis. Use when the /draft (user:pipeline) command needs to map analyzed steps to concrete pipeline components. Produces _component-design.md.
-tools: Read, Grep, Glob
+tools: Read, Write, Edit, Grep, Glob
 model: sonnet
 skills: pipeline-design-patterns, subagent-output-optimization
 ---

@@ -1,7 +1,7 @@
 ---
 name: pipeline-analyzer
 description: Analyzes a target process and decomposes it into automatable pipeline steps. Use when the /draft (user:pipeline) command needs to analyze a process for pipeline design. Produces _process-analysis.md.
-tools: Read, Grep, Glob
+tools: Read, Write, Edit, Grep, Glob
 model: haiku
 skills: pipeline-design-patterns, subagent-output-optimization
 ---
