@@ -1,5 +1,5 @@
 ---
-description: "Performs deep-dive analysis on top 2-3 candidate projects: evaluates technical decisions and alternatives, validates metrics realism, assesses contribution boundaries, identifies risk areas and generates question seeds. Produces project_deep_dive.md artifact. Use interview-guidelines skill."
+description: "Performs deep-dive analysis on top 2-3 candidate projects: evaluates technical decisions and alternatives, validates metrics realism, assesses contribution boundaries, identifies risk areas and generates question seeds. Produces project_deep_dive.md artifact. Use dev-interview-guidelines skill."
 model: opus
 ---
 

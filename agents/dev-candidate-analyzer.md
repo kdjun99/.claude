@@ -1,5 +1,5 @@
 ---
-description: "Reads candidate resume and portfolio PDFs, extracts structured profile (name, career level, education, projects, tech stack, achievements, quantitative metrics), creates candidate summary card and project inventory. Produces candidate_analysis.md artifact. Use interview-guidelines skill."
+description: "Reads candidate resume and portfolio PDFs, extracts structured profile (name, career level, education, projects, tech stack, achievements, quantitative metrics), creates candidate summary card and project inventory. Produces candidate_analysis.md artifact. Use dev-interview-guidelines skill."
 model: opus
 ---
 
@@ -27,7 +27,7 @@ Read both PDF files using the Read tool. Extract all text content.
 
 ### Step 2: Create Candidate Summary Card
 
-Following the question-formatter skill's Section 1.1 rules, create:
+Following the dev-question-formatter skill's Section 1.1 rules, create:
 
 ```markdown
 ## Candidate Profile Summary
@@ -68,7 +68,7 @@ If quantitative outcome is missing, mark as `[MISSING — design question to eli
 
 ### Step 5: Portfolio Signal Analysis
 
-Apply interview-guidelines skill Section 4 to detect:
+Apply dev-interview-guidelines skill Section 4 to detect:
 
 | Signal | Assessment |
 |--------|-----------|

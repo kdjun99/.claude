@@ -1,13 +1,13 @@
 ---
-description: "Generates a structured 30-minute interview question document from candidate resume and portfolio PDFs. Orchestrates 4-step pipeline: (1) candidate analysis, (2) project deep-dive, (3) question generation, (4) quality verification. 3 human checkpoints for review."
+description: "Generates a structured 30-minute planner (기획자) interview question document from candidate resume and portfolio PDFs. Orchestrates 4-step pipeline: (1) candidate analysis with 8 portfolio signals, (2) project deep-dive with KPI/prioritization analysis, (3) question generation with planner perspectives, (4) quality verification. 3 human checkpoints for review."
 allowed-tools: ["Task", "Read", "Write", "Glob", "Grep", "Bash", "AskUserQuestion"]
 ---
 
-# /interview Command
+# /plan:interview Command
 
-Generate a structured 30-minute interview question document from candidate documents.
+Generate a structured 30-minute **planner (기획자)** interview question document from candidate documents.
 
-**Usage:** `/interview <candidate_name> <resume_pdf_path> <portfolio_pdf_path>`
+**Usage:** `/plan:interview <candidate_name> <resume_pdf_path> <portfolio_pdf_path>`
 
 ## Arguments
 
@@ -25,41 +25,42 @@ If arguments are missing, use AskUserQuestion to ask:
 
 1. Verify resume PDF exists (use Read tool to test)
 2. Verify portfolio PDF exists (use Read tool to test)
-3. Create workspace: `~/.claude/workspace/interview-question-generator/{candidate_name}/`
+3. Create workspace: `~/.claude/workspace/plan-interview-question-generator/{candidate_name}/`
 4. Create input directory: `{workspace}/input/`
 5. If either PDF is missing, report error and STOP
 
 ## Step 1: Candidate Analysis
 
-Delegate to `candidate-analyzer` agent (opus):
+Delegate to `plan-candidate-analyzer` agent (opus):
 
 ```
-Analyze the candidate's resume and portfolio documents.
+Analyze the candidate's resume and portfolio documents for planner (기획자) competencies.
 
 resume_pdf_path: {resume_pdf_path}
 portfolio_pdf_path: {portfolio_pdf_path}
 candidate_name: {candidate_name}
-workspace_path: ~/.claude/workspace/interview-question-generator/{candidate_name}/
+workspace_path: ~/.claude/workspace/plan-interview-question-generator/{candidate_name}/
 ```
 
 **After completion:**
 1. Read the generated `candidate_analysis.md`
 2. Display to user:
-   - Candidate profile summary
+   - Candidate profile summary (including Domain Relevance)
    - Project inventory (table)
+   - Portfolio signals summary (8 signals)
    - Any checkpoint items flagged
 3. **Human Checkpoint:**
    - Use AskUserQuestion: "분석 결과를 검토해주세요. 다음 단계로 진행할까요?"
    - Options: "Proceed" / "I have feedback"
-   - If feedback: note it and re-run candidate-analyzer with feedback context
+   - If feedback: note it and re-run plan-candidate-analyzer with feedback context
    - If proceed: continue to Step 2
 
 ## Step 2: Project Deep-Dive
 
-Delegate to `project-analyzer` agent (opus):
+Delegate to `plan-project-analyzer` agent (opus):
 
 ```
-Perform deep-dive analysis on the candidate's top projects.
+Perform deep-dive analysis on the candidate's top projects from a planner perspective.
 
 candidate_analysis_path: {workspace}/candidate_analysis.md
 resume_pdf_path: {resume_pdf_path}
@@ -71,20 +72,21 @@ workspace_path: {workspace}
 1. Read the generated `project_deep_dive.md`
 2. Display to user:
    - Selected projects and selection rationale
-   - Key findings per project (technical decisions, risks)
+   - Key findings per project (product decisions, risks, KPI analysis)
+   - Cross-project prioritization observations
    - Question seeds count
 3. **Human Checkpoint:**
    - Use AskUserQuestion: "프로젝트 분석 결과를 검토해주세요. 다음 단계로 진행할까요?"
    - Options: "Proceed" / "I have feedback"
-   - If feedback: note it and re-run project-analyzer with feedback context
+   - If feedback: note it and re-run plan-project-analyzer with feedback context
    - If proceed: continue to Step 3
 
 ## Step 3: Question Generation
 
-Delegate to `question-generator` agent (sonnet):
+Delegate to `plan-question-generator` agent (sonnet):
 
 ```
-Generate structured interview questions from the analysis artifacts.
+Generate structured planner interview questions from the analysis artifacts.
 
 candidate_analysis_path: {workspace}/candidate_analysis.md
 project_deep_dive_path: {workspace}/project_deep_dive.md
@@ -96,19 +98,20 @@ workspace_path: {workspace}
 2. Display to user:
    - Ice breaking questions
    - Question count per project
+   - KPI/prioritization question coverage
    - Self-verification results
 3. **Human Checkpoint:**
    - Use AskUserQuestion: "질문 초안을 검토해주세요. 다음 단계로 진행할까요?"
    - Options: "Proceed to quality check" / "I have feedback"
-   - If feedback: note it and re-run question-generator with feedback context
+   - If feedback: note it and re-run plan-question-generator with feedback context
    - If proceed: continue to Step 4
 
 ## Step 4: Quality Verification
 
-Delegate to `quality-verifier` agent (haiku):
+Delegate to `plan-quality-verifier` agent (haiku):
 
 ```
-Verify the interview question draft against the quality rubric.
+Verify the planner interview question draft against the quality rubric.
 
 draft_path: {workspace}/interview_questions_draft.md
 workspace_path: {workspace}

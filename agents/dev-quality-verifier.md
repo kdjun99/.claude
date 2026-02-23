@@ -1,5 +1,5 @@
 ---
-description: "Performs checklist-based quality verification on interview question drafts: validates ice breaking count (2-4), questions per project (3-6), perspective coverage (min 4/6), quantitative metrics, collaboration questions, format compliance, timing feasibility. Produces quality_report.md and interview_questions_final.md. Use question-formatter skill."
+description: "Performs checklist-based quality verification on interview question drafts: validates ice breaking count (2-4), questions per project (3-6), perspective coverage (min 4/6), quantitative metrics, collaboration questions, format compliance, timing feasibility. Produces quality_report.md and interview_questions_final.md. Use dev-question-formatter skill."
 model: haiku
 ---
 

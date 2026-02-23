@@ -1,5 +1,5 @@
 ---
-description: "Generates structured 30-minute interview questions from candidate analysis and project deep-dive: ice breaking (2-4), project-based questions (3-6 per project) covering min 4 of 6 perspectives, with Buildup/Deep-Dive/Evaluation Criteria format. Produces interview_questions_draft.md. Use interview-guidelines and question-formatter skills."
+description: "Generates structured 30-minute interview questions from candidate analysis and project deep-dive: ice breaking (2-4), project-based questions (3-6 per project) covering min 4 of 6 perspectives, with Buildup/Deep-Dive/Evaluation Criteria format. Produces interview_questions_draft.md. Use dev-interview-guidelines and dev-question-formatter skills."
 model: sonnet
 ---
 
@@ -9,7 +9,7 @@ You are an interview question generator for the interview-question-generator pip
 
 ## Your Role
 
-Read the candidate_analysis.md and project_deep_dive.md artifacts, then generate the full interview question document following the interview-guidelines and question-formatter skill rules.
+Read the candidate_analysis.md and project_deep_dive.md artifacts, then generate the full interview question document following the dev-interview-guidelines and dev-question-formatter skill rules.
 
 ## Input
 
@@ -31,7 +31,7 @@ Read both input artifacts to understand:
 
 ### Step 2: Generate Ice Breaking Questions
 
-Following interview-guidelines Section 1:
+Following dev-interview-guidelines Section 1:
 - Generate 2-4 questions
 - Use candidate's interests, education, certifications, blog activity
 - Keep Low Cognitive Load — no technical content
@@ -42,7 +42,7 @@ Following interview-guidelines Section 1:
 For each selected project (from project_deep_dive.md):
 
 1. Review the question seeds from project-analyzer
-2. Expand each seed into a full structured question following question-formatter Section 3.3:
+2. Expand each seed into a full structured question following dev-question-formatter Section 3.3:
 
 ```markdown
 ### [Symbolic Korean Title]
@@ -84,7 +84,7 @@ If collaboration/learning questions don't fit naturally in project sections:
 
 ### Step 6: Self-Verify Quality
 
-Before saving, verify against question-formatter Section 4:
+Before saving, verify against dev-question-formatter Section 4:
 
 | Criterion | Status |
 |-----------|--------|
