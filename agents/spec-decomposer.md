@@ -17,6 +17,7 @@ Read _spec-analysis.md, generate foundation + domain feature-requests for each f
 
 You will receive:
 - `analysis_path`: Path to _spec-analysis.md
+- `domain_mapping_path`: Path to _domain-mapping.md (developer-filled, validated)
 - `pdf_path`: Path to original PDF (for detailed requirements reference)
 - `spec_id`: Spec identifier
 - `repo_structure_skill`: Path to the project's repo-structure skill file (e.g., `~/.claude/skills/{project}-repo-structure/skill.md`)
@@ -34,7 +35,25 @@ Read the repo structure skill file at `{repo_structure_skill}` path using Read t
 
 Use this information throughout Steps 3-6 for accurate repo assignment, sizing validation, and dependency graph construction.
 
-### Step 1: Read Analysis
+### Step 1: Load Domain Mapping
+
+Read `_domain-mapping.md` and build an internal lookup table:
+
+```
+Mapping:
+  {spec-term}:
+    db_table: {table}
+    orm_model: {model}
+    graphql_type: {type}
+    notes: {notes}
+```
+
+This mapping is used in Steps 3-4 when writing Technical Details and Domain Terms sections of each feature-request. Follow the "Domain Mapping Reference Rule" from spec-decomposition-patterns:
+- Use actual code entities (DB Table, ORM Model, GraphQL Type) from the mapping
+- If a term is not in the mapping, keep the spec wording with `(unmapped)` annotation
+- Never guess or invent code entity names
+
+### Step 2: Read Analysis
 
 Read `_spec-analysis.md` and extract:
 - All feature groups with their items, repos, and descriptions
@@ -53,7 +72,7 @@ Group: {name}
   Communication Pattern: {pattern}
 ```
 
-### Step 2: Read PDF Details
+### Step 3: Read PDF Details
 
 For each feature group, read the relevant PDF pages (using page references from the analysis) to extract:
 - Field definitions with types and validation rules
@@ -64,15 +83,16 @@ For each feature group, read the relevant PDF pages (using page references from 
 
 This step enriches the analysis with implementation-level detail needed for accurate feature-request scoping.
 
-### Step 3: Generate Foundation Feature-Requests
+### Step 4: Generate Foundation Feature-Requests
 
 For each feature group, create exactly 1 foundation feature-request per impacted repo (following spec-decomposition-patterns):
 
 **Foundation content:**
-1. **DB Schema** — New tables, columns, relations, enums (Prisma schema format)
-2. **API Interface** — GraphQL types/inputs/mutations (for GraphQL repos) or REST DTOs/endpoints (for REST repos)
+1. **DB Schema** — New tables, columns, relations, enums (Prisma schema format). Use actual table names and ORM model names from `_domain-mapping.md`
+2. **API Interface** — GraphQL types/inputs/mutations (for GraphQL repos) or REST DTOs/endpoints (for REST repos). Use actual GraphQL type names from `_domain-mapping.md`
 3. **Scaffolding** — Empty Resolver/Controller stubs + minimal Service with method signatures
 4. **NO business logic** — Only structural definitions
+5. **Domain Terms section** — List all domain mapping entries referenced in this FR
 
 **Sizing validation (must pass ALL):**
 - Tables ≤ 2
@@ -86,15 +106,16 @@ If foundation exceeds table limit (> 2 tables), split into:
 
 **Naming:** `{nn}-{group-name}-foundation.md`
 
-### Step 4: Generate Domain Feature-Requests
+### Step 5: Generate Domain Feature-Requests
 
 For each user-facing function within a feature group, create 1 domain feature-request:
 
 **Domain content:**
 1. **Scope** — Exactly 1 user-facing function (e.g., "update application status")
 2. **Business Logic** — Validation rules, state transitions, access control
-3. **Technical Details** — Which service methods to implement, what queries to write
+3. **Technical Details** — Which service methods to implement, what queries to write. Use actual DB Table, ORM Model, and GraphQL Type from `_domain-mapping.md`
 4. **Acceptance Criteria** — Testable criteria derived from spec
+5. **Domain Terms section** — List all domain mapping entries referenced in this FR
 
 **Sizing validation (must pass ALL):**
 - Resolvers/Endpoints ≤ 3
@@ -111,7 +132,7 @@ If a domain feature-request exceeds limits:
 
 **Naming:** `{nn}-{group-name}-{function-name}.md`
 
-### Step 5: Validate All Sizing
+### Step 6: Validate All Sizing
 
 After generating all feature-requests, run a final validation pass:
 
@@ -126,7 +147,7 @@ For each feature-request, verify against spec-decomposition-patterns sizing crit
 
 Log any splits performed with reason.
 
-### Step 6: Build Dependency Graph
+### Step 7: Build Dependency Graph
 
 Declare dependencies for each feature-request following spec-decomposition-patterns dependency rules:
 
@@ -146,7 +167,7 @@ or for cross-repo:
 - **Depends On**: [{repo-name}/02-app-status-update]
 ```
 
-### Step 7: Calculate Execution Waves
+### Step 8: Calculate Execution Waves
 
 Apply the spec-decomposition-patterns wave calculation algorithm:
 
@@ -160,7 +181,7 @@ Apply the spec-decomposition-patterns wave calculation algorithm:
 
 Assign `execution_wave` to each feature-request's Execution Context section.
 
-### Step 8: Write Output Files
+### Step 9: Write Output Files
 
 **A. Feature-request files:**
 
@@ -199,7 +220,13 @@ Each file follows the spec-decomposition-patterns feature-request template:
 {What is explicitly NOT included — handled by other feature-requests}
 
 ## Technical Details
-{Implementation guidance: tables, resolvers/endpoints, service methods}
+{Implementation guidance using actual code entities from _domain-mapping.md}
+
+## Domain Terms
+{Subset of _domain-mapping.md entries referenced in this FR}
+| Spec Term | DB Table | ORM Model | GraphQL Type |
+|-----------|----------|-----------|--------------|
+| {term} | {table} | {model} | {type} |
 
 ## Acceptance Criteria
 - [ ] {Testable criterion 1}

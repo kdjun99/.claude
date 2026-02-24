@@ -1,11 +1,11 @@
 ---
-description: "Decompose analyzed spec into foundation + domain feature-requests with dependency graph. Second step of the spec-decomposition pipeline."
+description: "Decompose analyzed spec into foundation + domain feature-requests with dependency graph. Third step of the spec-decomposition pipeline (after analyze and translate)."
 allowed-tools: Read, Write, Glob, Grep, Task
 ---
 
 # /spec-decompose {spec-id}
 
-Decompose a spec analysis into individual feature-request.md files organized by repo and execution order.
+Decompose a spec analysis into individual feature-request.md files organized by repo and execution order. Uses the validated domain mapping to produce feature-requests with accurate code entities.
 
 ## Input
 
@@ -18,10 +18,14 @@ Parse from: $ARGUMENTS
 1. **Argument present**: `spec-id` must be provided
    - If missing: "Usage: /spec-decompose {spec-id}"
 2. **Analysis exists**: Verify `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md` exists
-   - If missing: "Spec analysis not found. Run `/spec-analyze {spec-id} --pdf {path}` first."
+   - If missing: "Spec analysis not found. Run `/spec-analyze {spec-id} --pdf {path} --project {project}` first."
 3. **Analysis Todo complete**: Read _spec-analysis.md, check that `## Todo` section has no `- [ ]` items
    - If incomplete: "The spec analysis has incomplete items. Review and complete _spec-analysis.md before decomposing."
-4. **No duplicate run**: Check if `~/.claude/workspace/specs/{spec-id}/_requirements.md` already exists
+4. **Domain mapping exists**: Verify `~/.claude/workspace/specs/{spec-id}/_domain-mapping.md` exists
+   - If missing: "Domain mapping not found. Run `/spec-translate {spec-id}` first."
+5. **Domain mapping validated**: Read _domain-mapping.md, check that `## Todo` section has no `- [ ]` items
+   - If incomplete: "Domain mapping has not been validated. Fill in the mapping and run `/spec-translate {spec-id}` first."
+6. **No duplicate run**: Check if `~/.claude/workspace/specs/{spec-id}/_requirements.md` already exists
    - If exists: "Decomposition already exists for '{spec-id}'. To re-decompose, delete `~/.claude/workspace/specs/{spec-id}/_requirements.md` and `feature-requests/` first."
 
 ## Execution
@@ -29,20 +33,25 @@ Parse from: $ARGUMENTS
 ### Phase 1: Load Context
 
 1. Read `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md`
-2. Extract from analysis:
+2. Read `~/.claude/workspace/specs/{spec-id}/_domain-mapping.md`
+3. Extract from analysis:
    - PDF path (from Metadata section)
    - Project name (from Metadata → `Project` field)
    - Feature group count
    - Impacted repos list
    - Estimated feature-request count
-3. Resolve repo structure skill path: `~/.claude/skills/{project}-repo-structure/skill.md`
+4. Extract from domain mapping:
+   - Number of mapped terms
+   - Mapping status (Validated)
+5. Resolve repo structure skill path: `~/.claude/skills/{project}-repo-structure/skill.md`
    - If skill file does not exist: "Repo structure skill not found for project '{project}'. Expected: ~/.claude/skills/{project}-repo-structure/skill.md"
-4. Display to user:
+6. Display to user:
    ```
    Starting decomposition...
    - Spec ID: {spec-id}
    - Project: {project}
    - Repo Structure: ~/.claude/skills/{project}-repo-structure/skill.md
+   - Domain mapping: {n} terms mapped (Validated)
    - Feature groups: {n}
    - Impacted repos: {list}
    - Estimated feature-requests: {n}
@@ -56,12 +65,13 @@ Delegate to the `spec-decomposer` agent (subagent_type from agents/spec-decompos
 Decompose the following spec analysis into feature-requests.
 
 analysis_path: ~/.claude/workspace/specs/{spec-id}/_spec-analysis.md
+domain_mapping_path: ~/.claude/workspace/specs/{spec-id}/_domain-mapping.md
 pdf_path: {pdf path from analysis metadata}
 spec_id: {spec-id}
 repo_structure_skill: ~/.claude/skills/{project}-repo-structure/skill.md
 output_path: ~/.claude/workspace/specs/{spec-id}/
 
-Read the analysis, PDF, and repo-structure skill, then generate foundation + domain feature-requests, build dependency graph, calculate execution waves, and write all output files.
+Read the analysis, domain mapping, PDF, and repo-structure skill, then generate foundation + domain feature-requests using actual code entities from the domain mapping, build dependency graph, calculate execution waves, and write all output files.
 ```
 
 Use Task tool with:
@@ -119,7 +129,7 @@ If any sizing validation failed:
 Review _requirements.md Sizing Validation section for details.
 ```
 
-### Phase 5: Human Checkpoint (H2)
+### Phase 5: Human Checkpoint (H3)
 
 Request user review:
 
@@ -154,8 +164,10 @@ Please review the generated feature-requests for:
 
 | Error | Action |
 |-------|--------|
-| Analysis not found | Stop: "Run `/spec-analyze {spec-id} --pdf {path}` first." |
+| Analysis not found | Stop: "Run `/spec-analyze {spec-id} --pdf {path} --project {project}` first." |
 | Analysis incomplete | Stop: "Complete _spec-analysis.md Todo items first." |
+| Domain mapping not found | Stop: "Run `/spec-translate {spec-id}` first." |
+| Domain mapping not validated | Stop: "Fill in _domain-mapping.md and run `/spec-translate {spec-id}` first." |
 | Agent timeout | Stop: "spec-decomposer agent timed out. The analysis may have too many groups. Try reducing scope." |
 | No FRs generated | Stop with error, suggest checking analysis quality |
 | _requirements.md not created | Stop with error, suggest re-running |

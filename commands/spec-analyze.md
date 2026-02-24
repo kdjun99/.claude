@@ -75,11 +75,14 @@ Use Task tool with:
 
 1. Verify `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md` was created
    - If missing: "Error: spec-analyzer agent did not produce _spec-analysis.md. Check the agent output for errors."
-2. Read _spec-analysis.md to extract summary data:
+2. Verify `~/.claude/workspace/specs/{spec-id}/_domain-mapping.md` was created
+   - If missing: "Error: spec-analyzer agent did not produce _domain-mapping.md. Check the agent output for errors."
+3. Read _spec-analysis.md to extract summary data:
    - Checklist counts (included/excluded/uncertain)
    - Number of feature groups
    - Impacted repos list
    - Estimated feature-request count
+   - Domain terms count (from ## Domain Terms section)
 
 ### Phase 4: Present Results
 
@@ -96,8 +99,11 @@ Display to user:
 | Feature groups | {n} |
 | Impacted repos | {list} |
 | Est. feature-requests | {n} ({f} foundation + {d} domain) |
+| Domain terms extracted | {n} |
 
-Artifact: ~/.claude/workspace/specs/{spec-id}/_spec-analysis.md
+Artifacts:
+- Analysis: ~/.claude/workspace/specs/{spec-id}/_spec-analysis.md
+- Domain mapping template: ~/.claude/workspace/specs/{spec-id}/_domain-mapping.md
 ```
 
 If there are uncertain items:
@@ -118,14 +124,21 @@ Please review `_spec-analysis.md` for:
 3. **Repo mapping** — Are repos assigned correctly per group?
 4. **Missing requirements** — Any checklist items that were missed or misinterpreted?
 5. **Uncertain items** — Decide include/exclude for any flagged items
+6. **Domain terms** — Are all business domain terms captured? Any missing terms?
 
-After review, proceed to decomposition:
-/spec-decompose {spec-id}
+Then fill in the domain mapping:
+1. Open `~/.claude/workspace/specs/{spec-id}/_domain-mapping.md`
+2. For each spec term, fill in: DB Table, ORM Model, GraphQL Type
+3. Mark N/A for columns that don't apply
+
+After completing the mapping, validate it:
+/spec-translate {spec-id}
 ```
 
 ## Output
 
-- `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md` — Full analysis artifact
+- `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md` — Full analysis artifact with domain terms
+- `~/.claude/workspace/specs/{spec-id}/_domain-mapping.md` — Domain mapping template for developer to fill
 - Summary displayed to user with review checklist
 
 ## Error Handling

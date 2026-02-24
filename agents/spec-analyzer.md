@@ -130,7 +130,66 @@ Build a matrix showing which repos are affected by which groups (columns from re
 ```
 (P = Primary, S = Secondary)
 
-### Step 6: Write Output
+### Step 6: Extract Domain Terms
+
+Scan all included checklist items and their detailed specs to identify domain terms — business-specific nouns that will need mapping to code entities.
+
+**What qualifies as a domain term:**
+- Business entities: 공고, 지원자, 스크랩, Q&A, etc.
+- Business metrics: 조회수, 관심, 전일 대비 증감, etc.
+- Business states/stages: 진행, 마감, 평가진행중, 최종합격, 불합격, etc.
+- Business actions: 공고 마감, 숨기기, 간편지원, etc.
+- Business concepts: 채용 현황, 공고 성과, 관심유저, etc.
+
+**Extraction rules:**
+1. Use the EXACT wording from the spec (do NOT translate to English or guess code names)
+2. Include a brief description of what the term means in context
+3. Group by feature group for traceability
+4. Deduplicate terms that appear across multiple groups (list each unique term once)
+
+**Output:** A flat list of unique domain terms with descriptions, used in Steps 7 and 8.
+
+### Step 7: Write _domain-mapping.md Template
+
+Write `{output_path}/_domain-mapping.md` with the following structure:
+
+```markdown
+# Domain Mapping: {spec-id}
+
+## Context
+- **Spec ID**: {spec-id}
+- **Project**: {project}
+- **Created**: {current date}
+- **Status**: Template (developer input required)
+
+## Instructions
+
+Fill in the code entity columns for each spec term. These mappings will be used by `/spec-decompose` to generate accurate feature-requests with real code entities.
+
+- **DB Table**: The actual database table name (e.g., `rec_activityinstances`)
+- **ORM Model**: The Prisma/Sequelize model class name (e.g., `RecActivityInstance`)
+- **GraphQL Type**: The GraphQL type/DTO name if exposed via API (e.g., `ActivityDto`), or `-` if not applicable
+- **Notes**: Any additional context (e.g., "status field determines stage", "count aggregation only")
+
+## Mapping
+
+| Spec Term | Description | DB Table | ORM Model | GraphQL Type | Notes |
+|-----------|-------------|----------|-----------|--------------|-------|
+{for each extracted domain term from Step 6:}
+| {term} | {description} | | | | |
+
+## Todo
+- [ ] All Spec Terms have DB Table filled (or marked N/A)
+- [ ] All Spec Terms have ORM Model filled (or marked N/A)
+- [ ] All Spec Terms have GraphQL Type filled (or marked N/A)
+- [ ] Mapping reviewed by developer
+
+## Next
+After completing the mapping, run:
+/spec-translate {spec-id}
+```
+
+### Step 8: Write _spec-analysis.md
 
 Write `_spec-analysis.md` to `{output_path}/_spec-analysis.md` with the following structure:
 
@@ -193,6 +252,15 @@ Write `_spec-analysis.md` to `{output_path}/_spec-analysis.md` with the followin
 | {group-1} | {P/S/-} | ... | |
 | {group-2} | ... | | |
 
+## Domain Terms
+
+Unique domain terms extracted from the spec. These will be mapped to code entities in `_domain-mapping.md`.
+
+| Term | Description | Used In Groups |
+|------|-------------|---------------|
+| {term} | {description} | {group names} |
+| ... | | |
+
 ## Dependency Notes
 - {any cross-group or cross-repo dependencies observed in the spec}
 - {data flow dependencies: "Group X needs Group Y's entity"}
@@ -213,6 +281,8 @@ Write `_spec-analysis.md` to `{output_path}/_spec-analysis.md` with the followin
 - [x] Detailed specs mapped to checklist items
 - [x] Features grouped by domain
 - [x] Repos assigned using repo-structure skill
+- [x] Domain terms extracted
+- [x] _domain-mapping.md template written
 - [x] _spec-analysis.md written
 ```
 
@@ -226,7 +296,9 @@ Spec Analysis Complete: {spec-title}
 - Groups: {n} feature groups
 - Repos impacted: {list of repo names}
 - Estimated feature-requests: {n} total ({f} foundation + {d} domain)
+- Domain terms extracted: {n} unique terms
 - Output: {output_path}/_spec-analysis.md
+- Domain mapping template: {output_path}/_domain-mapping.md
 ```
 
 Do NOT return the full file contents — the calling command will read the file if needed.
