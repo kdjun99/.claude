@@ -15,5 +15,8 @@
 # Track .gitignore itself
 !.gitignore
 
+# Ignore project-specific repo structure skills (contain internal company data)
+skills/*-repo-structure/
+
 # Always ignore .DS_Store
 .DS_Store
