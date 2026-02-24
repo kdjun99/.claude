@@ -3,7 +3,7 @@ description: "Analyze a PDF design spec (기획서) — extract checklist, group
 allowed-tools: Read, Write, Glob, Grep, Task
 ---
 
-# /spec-analyze {spec-id} --pdf {path}
+# /spec-analyze {spec-id} --pdf {path} --project {project}
 
 Analyze a PDF design spec and produce a structured analysis artifact.
 
@@ -11,16 +11,19 @@ Analyze a PDF design spec and produce a structured analysis artifact.
 
 - `spec-id`: Identifier for this spec (kebab-case, e.g., `simple-apply-v1`)
 - `--pdf {path}`: Absolute path to the PDF spec file
+- `--project {project}`: Project name (e.g., `linkareer`). Determines which repo-structure skill to load (`~/.claude/skills/{project}-repo-structure/skill.md`)
 
 Parse from: $ARGUMENTS
 
 ## Gate
 
-1. **Arguments present**: Both `spec-id` and `--pdf` must be provided
-   - If missing: "Usage: /spec-analyze {spec-id} --pdf {path}"
+1. **Arguments present**: `spec-id`, `--pdf`, and `--project` must all be provided
+   - If missing: "Usage: /spec-analyze {spec-id} --pdf {path} --project {project}"
 2. **PDF exists**: Verify file exists at the given path
    - If missing: "PDF not found at: {path}"
-3. **No duplicate run**: Check if `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md` already exists
+3. **Project skill exists**: Verify `~/.claude/skills/{project}-repo-structure/skill.md` exists
+   - If missing: "Repo structure skill not found for project '{project}'. Expected: ~/.claude/skills/{project}-repo-structure/skill.md"
+4. **No duplicate run**: Check if `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md` already exists
    - If exists: "Analysis already exists for '{spec-id}'. To re-analyze, delete `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md` first, or use a different spec-id."
 
 ## Execution
@@ -30,16 +33,20 @@ Parse from: $ARGUMENTS
 1. Parse arguments:
    - Extract `spec-id` as the first argument
    - Extract PDF path from `--pdf` flag
+   - Extract project name from `--project` flag
 2. Validate PDF file exists using Read tool (attempt to read first page)
-3. Create workspace directory:
+3. Resolve repo structure skill path: `~/.claude/skills/{project}-repo-structure/skill.md`
+4. Create workspace directory:
    ```
    mkdir -p ~/.claude/workspace/specs/{spec-id}
    ```
-4. Display to user:
+5. Display to user:
    ```
    Starting spec analysis...
    - Spec ID: {spec-id}
+   - Project: {project}
    - PDF: {path}
+   - Repo Structure: ~/.claude/skills/{project}-repo-structure/skill.md
    - Workspace: ~/.claude/workspace/specs/{spec-id}/
    ```
 
@@ -52,9 +59,11 @@ Analyze the following PDF design spec.
 
 pdf_path: {absolute path to PDF}
 spec_id: {spec-id}
+project: {project}
+repo_structure_skill: ~/.claude/skills/{project}-repo-structure/skill.md
 output_path: ~/.claude/workspace/specs/{spec-id}/
 
-Read the PDF, extract the checklist, group features by domain, map to repos, and write _spec-analysis.md.
+Read the PDF, extract the checklist, group features by domain, map to repos using the repo-structure skill, and write _spec-analysis.md.
 ```
 
 Use Task tool with:

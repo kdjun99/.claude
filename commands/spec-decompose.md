@@ -31,13 +31,18 @@ Parse from: $ARGUMENTS
 1. Read `~/.claude/workspace/specs/{spec-id}/_spec-analysis.md`
 2. Extract from analysis:
    - PDF path (from Metadata section)
+   - Project name (from Metadata → `Project` field)
    - Feature group count
    - Impacted repos list
    - Estimated feature-request count
-3. Display to user:
+3. Resolve repo structure skill path: `~/.claude/skills/{project}-repo-structure/skill.md`
+   - If skill file does not exist: "Repo structure skill not found for project '{project}'. Expected: ~/.claude/skills/{project}-repo-structure/skill.md"
+4. Display to user:
    ```
    Starting decomposition...
    - Spec ID: {spec-id}
+   - Project: {project}
+   - Repo Structure: ~/.claude/skills/{project}-repo-structure/skill.md
    - Feature groups: {n}
    - Impacted repos: {list}
    - Estimated feature-requests: {n}
@@ -53,9 +58,10 @@ Decompose the following spec analysis into feature-requests.
 analysis_path: ~/.claude/workspace/specs/{spec-id}/_spec-analysis.md
 pdf_path: {pdf path from analysis metadata}
 spec_id: {spec-id}
+repo_structure_skill: ~/.claude/skills/{project}-repo-structure/skill.md
 output_path: ~/.claude/workspace/specs/{spec-id}/
 
-Read the analysis and PDF, generate foundation + domain feature-requests, build dependency graph, calculate execution waves, and write all output files.
+Read the analysis, PDF, and repo-structure skill, then generate foundation + domain feature-requests, build dependency graph, calculate execution waves, and write all output files.
 ```
 
 Use Task tool with:

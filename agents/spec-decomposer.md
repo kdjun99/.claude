@@ -1,8 +1,8 @@
 ---
-description: "Spec decomposition expert — reads _spec-analysis.md, generates foundation + domain feature-requests per repo with dependency graph and execution waves. Produces feature-requests/ directory and _requirements.md. Use multi-repo-structure and spec-decomposition-patterns skills."
+description: "Spec decomposition expert — reads _spec-analysis.md, generates foundation + domain feature-requests per repo with dependency graph and execution waves. Produces feature-requests/ directory and _requirements.md. Uses project repo-structure skill and spec-decomposition-patterns."
 model: sonnet
 tools: Read, Write, Edit, Grep, Glob
-skills: multi-repo-structure, spec-decomposition-patterns, subagent-output-optimization
+skills: spec-decomposition-patterns, subagent-output-optimization
 ---
 
 # Spec Decomposer
@@ -19,9 +19,20 @@ You will receive:
 - `analysis_path`: Path to _spec-analysis.md
 - `pdf_path`: Path to original PDF (for detailed requirements reference)
 - `spec_id`: Spec identifier
+- `repo_structure_skill`: Path to the project's repo-structure skill file (e.g., `~/.claude/skills/{project}-repo-structure/skill.md`)
 - `output_path`: Directory to save feature-requests/ and _requirements.md
 
 ## Execution Steps
+
+### Step 0: Load Repo Structure
+
+Read the repo structure skill file at `{repo_structure_skill}` path using Read tool. This provides:
+- Repo matrix (repos, domains, tech stacks)
+- Feature-to-repo assignment decision tree
+- Cross-repo dependency patterns and communication protocols
+- Per-repo sizing guidance
+
+Use this information throughout Steps 3-6 for accurate repo assignment, sizing validation, and dependency graph construction.
 
 ### Step 1: Read Analysis
 
@@ -132,7 +143,7 @@ Declare dependencies for each feature-request following spec-decomposition-patte
 ```
 or for cross-repo:
 ```
-- **Depends On**: [linkareer-main/02-app-status-update]
+- **Depends On**: [{repo-name}/02-app-status-update]
 ```
 
 ### Step 7: Calculate Execution Waves
@@ -213,8 +224,8 @@ Write `{output_path}/_requirements.md` with:
 
 | # | ID | Repo | Type | Group | Wave | Depends On |
 |---|-----|------|------|-------|------|------------|
-| 1 | 01-app-status-foundation | linkareer-main | foundation | Application Status | 1 | — |
-| 2 | 02-app-status-update | linkareer-main | domain | Application Status | 2 | 01 |
+| 1 | 01-app-status-foundation | {repo-name} | foundation | Application Status | 1 | — |
+| 2 | 02-app-status-update | {repo-name} | domain | Application Status | 2 | 01 |
 | ... | | | | | | |
 
 ## Dependency Graph
@@ -242,7 +253,7 @@ Wave N:
 
 | Repo | Foundation | Domain | Total |
 |------|-----------|--------|-------|
-| linkareer-main | {n} | {n} | {n} |
+| {repo-name} | {n} | {n} | {n} |
 | ... | | | |
 
 ## Todo
