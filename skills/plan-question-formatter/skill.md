@@ -156,7 +156,26 @@ For claims about user research or user-centered design:
 
 **Rule:** Always probe planning ownership by asking about specific DECISIONS and DIFFICULTIES, not general responsibilities.
 
-### 2.8 Backoffice & Ops Probing
+### 2.8 Problem Definition Probing
+
+For every project, probe how the candidate framed and defined the core problem — not just identified it:
+
+| Phase | Question Pattern |
+|-------|-----------------|
+| Sensing | "이 문제를 처음 인식하게 된 계기는 무엇인가요? (데이터, 사용자 피드백, 관찰 등)" |
+| Framing | "그 문제를 구체적으로 어떻게 정의하셨나요? 문제의 범위와 경계는 어떻게 설정했나요?" |
+| Validation | "정의한 문제가 실제 핵심 문제가 맞는지 어떻게 확인하셨나요? (사용자 검증, 데이터 분석 등)" |
+| Reframing | "기획 진행 중 처음 정의한 문제와 실제 문제가 달랐던 경험이 있나요? 어떻게 재정의하셨나요?" |
+
+**Follow-up chain (꼬리 질문):**
+- Sensing → "그 신호를 다른 팀원들도 문제로 인식했나요, 본인이 먼저 제기한 건가요?"
+- Framing → "여러 문제 중 이 문제를 우선 해결하기로 한 근거는 무엇인가요?"
+- Validation → "문제 정의가 잘못되었다는 것을 뒤늦게 알게 된 경험이 있나요?"
+- Reframing → "문제를 재정의한 후 기획 방향이 어떻게 바뀌었나요? 이해관계자들은 어떻게 설득하셨나요?"
+
+**Rule:** Problem definition probing assesses whether the candidate can correctly FRAME problems before jumping to solutions. At minimum 1 problem definition question per document. Generic "배경이 뭔가요?" is INSUFFICIENT — must probe the framing/validation process.
+
+### 2.9 Backoffice & Ops Probing
 
 For projects classified as Backoffice-admin tool or Hybrid in the Project Inventory:
 
@@ -232,6 +251,7 @@ Every planner interview document MUST satisfy ALL of the following:
 | 5 | Stakeholder/cross-functional question | At least 1 per document | Search for stakeholder alignment/conflict resolution/cross-functional coordination questions |
 | 6 | Project-based grouping | All questions in project sections | Verify no orphan "verification" or "additional" sections |
 | 7 | Timing feasibility | Total ~30 min | Sum timing guide, verify 28-35 min range |
+| 8 | Problem definition question | At least 1 per document probing problem framing process | Search for problem definition/framing/validation questions — generic "배경이 뭔가요?" alone is insufficient |
 
 ### Failure Protocol
 

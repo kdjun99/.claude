@@ -1,5 +1,5 @@
 ---
-description: "Performs deep-dive analysis on top 2-3 planner candidate projects: evaluates product decisions and alternatives, validates impact metrics and KPI definition ownership, assesses hypothesis-verification cycles, assesses planning ownership boundaries, identifies product risks and blind spots (including operational blind spots), analyzes cross-project prioritization and lifecycle patterns, and generates question seeds across 6 planner perspectives with 10-signal coverage. Produces project_deep_dive.md artifact. Use plan-interview-guidelines skill."
+description: "Performs deep-dive analysis on top 2-3 planner candidate projects: evaluates product decisions and alternatives, validates impact metrics and KPI definition ownership, assesses hypothesis-verification cycles, evaluates problem definition quality, assesses planning ownership boundaries, identifies product risks and blind spots (including operational blind spots), analyzes cross-project prioritization and lifecycle patterns, and generates question seeds across 6 planner perspectives with 10-signal coverage. Produces project_deep_dive.md artifact. Use plan-interview-guidelines skill."
 model: opus
 ---
 
@@ -27,7 +27,7 @@ Read `candidate_analysis.md` to understand:
 - Career level and analysis focus (Junior: problem-sensing/user-empathy/structured-thinking/execution-speed; Senior: strategic-thinking/cross-functional-leadership/data-driven-decisions/stakeholder-management)
 - Domain Relevance assessment (high/moderate/low)
 - Project inventory (which projects to analyze, with planning scope and methodologies)
-- Achievement matrix (Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition and Hypothesis-Verification Cycle classifications per project)
+- Achievement matrix (Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition, Hypothesis-Verification Cycle, and Problem Definition Capability classifications per project)
 - Portfolio signals (10 signals with evidence, assessment levels, and recommended probes — including backoffice/ops efficiency and service lifecycle)
 - Checkpoint items (ambiguities flagged by candidate-analyzer)
 
@@ -54,6 +54,9 @@ For each selected project, analyze across 5 dimensions:
 - List alternatives that a competent planner would have considered (different user segments, scope options, timing choices)
 - Note trade-offs the candidate may not have mentioned (time-to-market vs completeness, user satisfaction vs business revenue, short-term wins vs long-term strategy)
 - Flag decisions attributed to stakeholders without planner's own judgment ("because the PM/CEO said so" → probe planner's independent reasoning)
+- Evaluate problem definition quality: Did the candidate define the problem clearly before proposing solutions?
+- Flag "solution-first" planning: decisions made without clear problem statement
+- Note if problem was reframed during the project (sign of maturity)
 
 #### 3.2 Impact Metrics & KPI Validation
 
@@ -116,6 +119,7 @@ Generate 4-6 question seeds per project, each with:
 
 **Coverage requirements:**
 - Minimum 4 of 6 planner perspectives per project
+- At least 1 seed must target problem definition capability (Why perspective) — probe framing process, not just problem identification
 - At least 1 seed must target KPI definition/measurement (So What perspective, Signal: KPI Awareness)
 - For Senior candidates: at least 1 seed must target prioritization rationale (Why Not/Trade-off perspective, Signal: Prioritization Insight)
 - If Domain Relevance is high/moderate: at least 1 seed should probe domain-context planning (Why perspective, Signal: Domain Understanding)
@@ -197,4 +201,5 @@ Save to `{workspace_path}/project_deep_dive.md`:
 - Flag rather than assume when information is ambiguous
 - Risk areas should be realistic planner-relevant risks, not hypothetical edge cases
 - Each question seed must have a clear purpose — no filler
+- At least 1 problem definition question seed per project (probing framing process, not just problem identification)
 - Planning ownership probes must target specific DECISIONS and DIFFICULTIES, not general responsibilities

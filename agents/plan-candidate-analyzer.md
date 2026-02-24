@@ -106,6 +106,17 @@ For each project, additionally assess the hypothesis-verification cycle:
 | Results reported without hypothesis context | **Results-only** — design question to probe hypothesis formation process |
 | No hypothesis or data-driven validation mentioned | **Missing** — flag as gap, probe data usage in planning decisions |
 
+**Problem Definition Capability Dimension:**
+
+For each project, additionally assess problem definition quality:
+
+| Problem Definition Evidence | Classification |
+|-----------------------------|---------------|
+| Problem explicitly framed with scope/boundary, validated before solution | **Structured** — strong problem definition signal |
+| Problem mentioned but framing process unclear (jumped to solution) | **Implicit** — design question to probe framing process |
+| Solution described without clear problem statement | **Solution-first** — design question to surface problem definition |
+| No problem context mentioned | **Missing** — flag as gap, probe problem awareness |
+
 ### Step 5: Portfolio Signal Analysis (10 Signals)
 
 Apply plan-interview-guidelines skill Section 4 to detect all 10 signals:
@@ -141,6 +152,7 @@ List any ambiguities or missing information that the human reviewer should addre
 | KPI definition evidence | Present / Ambiguous / Missing | Note if candidate defines KPIs or just reports results |
 | Stakeholder context | Clear / Missing | Flag if cross-functional team structure is unclear |
 | Backoffice/ops planning evidence | Present / Missing | Flag if candidate has backoffice project but no operational efficiency consideration |
+| Problem definition evidence | Structured / Implicit / Solution-first / Missing | Flag if candidate jumps to solutions without problem framing |
 | Service lifecycle breadth | Full / Partial / Missing | 우대사항 — not disqualifying, but note lifecycle phases covered |
 
 ## Output
@@ -157,7 +169,7 @@ Save to `{workspace_path}/candidate_analysis.md`:
 (from Step 3 — table format, one per project)
 
 ## Achievement Matrix
-(from Step 4 — per-project Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition and Hypothesis-Verification Cycle classifications)
+(from Step 4 — per-project Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition, Hypothesis-Verification Cycle, and Problem Definition Capability classifications)
 
 ## Portfolio Signals
 (from Step 5 — 10-signal assessment with evidence, assessment level, and recommended probes)

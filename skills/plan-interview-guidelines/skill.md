@@ -38,13 +38,22 @@ The core analytical framework for deep-dive questions. Each project section MUST
 
 ### 2.1 Why — 문제/기회 식별 및 정의
 
-**Assesses:** Problem sensing, opportunity identification, user pain point awareness, market context understanding
+**Assesses:** Problem sensing, opportunity identification, **problem definition capability**, user pain point awareness, market context understanding
 
 **Probe patterns:**
 - "이 기능/프로젝트를 기획하게 된 배경은 무엇인가요? 어떤 문제를 해결하려 했나요?"
 - "그 문제가 존재한다는 것을 어떻게 파악하셨나요? (사용자 피드백, 데이터 분석, 시장 조사 등)"
 - "해결하려는 문제의 대상 사용자는 누구이며, 그들의 핵심 니즈를 어떻게 정의하셨나요?"
 - "왜 그 시점에 이 문제를 해결하는 것이 중요했나요? 다른 이슈들보다 우선순위가 높았던 이유는?"
+
+**Signal Integration — Problem Definition Capability:** Problem definition is distinct from problem sensing. Probe the PROCESS of framing and defining the problem, not just identifying it:
+
+| Phase | Probe Pattern |
+|-------|---------------|
+| Sensing | "이 문제를 처음 인식하게 된 계기는 무엇인가요? (데이터, 피드백, 관찰 등)" |
+| Framing | "그 문제를 구체적으로 어떻게 정의하셨나요? 문제의 범위와 경계는 어떻게 설정했나요?" |
+| Validation | "정의한 문제가 실제 핵심 문제가 맞는지 어떻게 확인하셨나요?" |
+| Reframing | "기획 진행 중 처음 정의한 문제와 실제 문제가 달랐던 경험이 있나요? 어떻게 재정의하셨나요?" |
 
 **Signal Integration — Domain Understanding:** When candidate has 대외활동/채용 플랫폼 experience, probe domain-specific problem identification: "링커리어 사용자들의 어떤 특성이 이 문제 정의에 영향을 미쳤나요?"
 
@@ -348,8 +357,8 @@ Follow-up questions should flow: **problem definition → alternatives → stake
 
 | Level | Purpose | Format | Applies To |
 |-------|---------|--------|-----------|
-| Hygiene Check | Basic planner competency | Binary: Pass / Fail | Problem articulation, user awareness, basic metrics, KPI concept, PRD artifact awareness |
-| Core Competency | Practical planning depth | Gradient: Plus / Minus | Data-driven reasoning, stakeholder management, structured prioritization, user validation, KPI-based decisions, hypothesis-verification cycle, PRD/wireframe quality, milestone/delivery management |
+| Hygiene Check | Basic planner competency | Binary: Pass / Fail | Problem articulation, problem definition, user awareness, basic metrics, KPI concept, PRD artifact awareness |
+| Core Competency | Practical planning depth | Gradient: Plus / Minus | Data-driven reasoning, stakeholder management, structured prioritization, user validation, KPI-based decisions, hypothesis-verification cycle, problem framing and validation, PRD/wireframe quality, milestone/delivery management |
 | Advanced Insight | Senior-level strategic thinking | Gradient: Plus / Minus | Market positioning, cross-functional influence, product vision, KPI system design, portfolio-level prioritization, backoffice/ops efficiency planning, service lifecycle perspective, UX simplification mastery |
 
 ### 5.6 Timing Guide
@@ -371,4 +380,5 @@ Follow-up questions should flow: **problem definition → alternatives → stake
 - [ ] Stakeholder/cross-functional question: at least 1 per document
 - [ ] All questions within project sections (no separate verification section)
 - [ ] Hypothesis-verification cycle question: at least 1 per document (must probe full data→hypothesis→verification cycle)
+- [ ] Problem definition question: at least 1 per document (must probe problem framing process, not just problem identification)
 - [ ] 30-minute timing is feasible

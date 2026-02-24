@@ -1,5 +1,5 @@
 ---
-description: "Generates structured 30-minute planner interview questions from candidate analysis and project deep-dive: ice breaking (2-4) with optional domain-fit question, project-based questions (3-6 per project) covering min 4 of 6 planner perspectives, ensuring ≥1 KPI question, ≥1 hypothesis-verification cycle question, ≥1 prioritization question (Senior), and backoffice/ops question (if applicable), with Buildup/Deep-Dive/Evaluation Criteria format. Produces interview_questions_draft.md. Use plan-interview-guidelines and plan-question-formatter skills."
+description: "Generates structured 30-minute planner interview questions from candidate analysis and project deep-dive: ice breaking (2-4) with optional domain-fit question, project-based questions (3-6 per project) covering min 4 of 6 planner perspectives, ensuring ≥1 KPI question, ≥1 hypothesis-verification cycle question, ≥1 problem definition capability probing question, ≥1 prioritization question (Senior), and backoffice/ops question (if applicable), with Buildup/Deep-Dive/Evaluation Criteria format. Produces interview_questions_draft.md. Use plan-interview-guidelines and plan-question-formatter skills."
 model: sonnet
 ---
 
@@ -25,7 +25,7 @@ You will receive:
 Read both input artifacts to understand:
 - Candidate profile (career level, keywords, analysis focus, Domain Relevance)
 - Project inventory (planning scope, methodologies, key challenges)
-- Achievement matrix (Problem/Opportunity → Planning Approach → Impact, with KPI Definition and Hypothesis-Verification Cycle classifications per project)
+- Achievement matrix (Problem/Opportunity → Planning Approach → Impact, with KPI Definition, Hypothesis-Verification Cycle, and Problem Definition Capability classifications per project)
 - Portfolio signals (10 signals with evidence, assessment, and recommended probes — including backoffice/ops efficiency and service lifecycle)
 - Per-project product analysis: product decisions, KPI validation, hypothesis-verification cycle analysis, planning ownership, risks, question seeds
 - Cross-project observations: planning consistency, prioritization patterns, lifecycle patterns
@@ -97,6 +97,16 @@ Problem Definition → Alternatives → Stakeholder Alignment → Impact Measure
 - If candidate has **no backoffice experience**: Include a hypothetical scenario question in Common Competency section: "사용자 기능 외에 내부 운영 효율화를 위한 기획이 필요하다면 어떻게 접근하시겠어요?"
 - Backoffice questions should probe operational stakeholder needs, not just admin UI design
 
+**Problem definition question requirement:**
+- MUST generate ≥1 question per document that probes the problem framing PROCESS
+- Use Problem Definition classification from Achievement Matrix to calibrate:
+  - Structured → probe how they decided on the problem scope/boundary, and what they intentionally excluded
+  - Implicit → probe "이 문제를 구체적으로 어떻게 정의하셨나요? 문제의 범위는?"
+  - Solution-first → probe "솔루션을 떠올리기 전에, 해결하려는 문제를 어떻게 정의하셨나요?"
+  - Missing → probe "이 기획의 출발점이 된 문제는 무엇이었나요? 그 문제를 어떻게 파악하셨나요?"
+- Must include follow-up probing (꼬리 질문): framing → validation → reframing
+- Generic "배경이 뭔가요?" is INSUFFICIENT — must probe the framing/validation process
+
 **Hypothesis-verification cycle question requirement (Signal: Data Literacy — Hypothesis-Driven):**
 - MUST generate ≥1 question per document that probes the full data→hypothesis→verification cycle
 - Use Hypothesis-Verification classification from Achievement Matrix to calibrate:
@@ -110,9 +120,9 @@ Problem Definition → Alternatives → Stakeholder Alignment → Impact Measure
 
 | Level | Planner Context |
 |-------|----------------|
-| Hygiene Check | Can articulate the problem clearly, knows who the user is, understands basic metrics, can define what KPI means for the project, PRD artifact awareness |
-| Core Competency | Data-driven reasoning, stakeholder management, structured prioritization, user validation, KPI-based decision-making, hypothesis-verification cycle, PRD/wireframe quality, milestone/delivery management |
-| Advanced Insight | Market positioning, cross-functional influence, product vision, KPI system design, portfolio-level prioritization, backoffice/ops efficiency planning, service lifecycle perspective, UX simplification mastery |
+| Hygiene Check | Can articulate the problem clearly, knows who the user is, understands basic metrics, can define what KPI means for the project, problem definition, PRD artifact awareness |
+| Core Competency | Data-driven reasoning, stakeholder management, structured prioritization, user validation, KPI-based decision-making, hypothesis-verification cycle, problem framing and validation, PRD/wireframe quality, milestone/delivery management |
+| Advanced Insight | Market positioning, cross-functional influence, product vision, KPI system design, portfolio-level prioritization, problem reframing, backoffice/ops efficiency planning, service lifecycle perspective, UX simplification mastery |
 
 ### Step 4: Generate Common Competency Section (if needed)
 
@@ -150,6 +160,7 @@ Before saving, verify against plan-question-formatter Section 4:
 | 5 | Stakeholder/cross-functional question: ≥1 | ✓/✗ |
 | 6 | All questions in project sections (no orphan sections) | ✓/✗ |
 | 7 | Timing feasible (~30 min, 28-35 range) | ✓/✗ |
+| 8 | Problem definition question: ≥1 probing problem framing process | ✓/✗ |
 
 If any criterion fails, fix before saving.
 
