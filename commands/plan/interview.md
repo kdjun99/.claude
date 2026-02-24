@@ -1,5 +1,5 @@
 ---
-description: "Generates a structured 30-minute planner (기획자) interview question document from candidate resume and portfolio PDFs. Orchestrates 4-step pipeline: (1) candidate analysis with 8 portfolio signals, (2) project deep-dive with KPI/prioritization analysis, (3) question generation with planner perspectives, (4) quality verification. 3 human checkpoints for review."
+description: "Generates a structured 30-minute planner (기획자) interview question document from candidate resume and portfolio PDFs. Orchestrates 4-step pipeline: (1) candidate analysis with 10 portfolio signals, (2) project deep-dive with KPI/prioritization/hypothesis-verification analysis, (3) question generation with planner perspectives, (4) quality verification. 3 human checkpoints for review."
 allowed-tools: ["Task", "Read", "Write", "Glob", "Grep", "Bash", "AskUserQuestion"]
 ---
 
@@ -47,7 +47,7 @@ workspace_path: ~/.claude/workspace/plan-interview-question-generator/{candidate
 2. Display to user:
    - Candidate profile summary (including Domain Relevance)
    - Project inventory (table)
-   - Portfolio signals summary (8 signals)
+   - Portfolio signals summary (10 signals)
    - Any checkpoint items flagged
 3. **Human Checkpoint:**
    - Use AskUserQuestion: "분석 결과를 검토해주세요. 다음 단계로 진행할까요?"

@@ -37,6 +37,7 @@ Structure each project as a table/list with these 6 fields:
 | Field | Description | Required |
 |-------|-------------|----------|
 | Project Name / Duration / Team Composition | Basic context including cross-functional team structure | Yes |
+| Project Type | User-facing feature / Backoffice-admin tool / Hybrid | Yes |
 | Product Goal & Hypothesis | What problem was being solved, for whom, what was the hypothesis | Yes |
 | Methodologies | User research, A/B testing, prototyping, PRD, wireframe, data analysis, etc. | Yes |
 | Personal Planning Scope | Specific scope of planning responsibility ("요구사항 정의 100%, 이해관계자 조율 70%") | Yes |
@@ -154,6 +155,19 @@ For claims about user research or user-centered design:
 | Vague "팀으로 진행" | Ask for exact personal/team boundary in planning decisions |
 
 **Rule:** Always probe planning ownership by asking about specific DECISIONS and DIFFICULTIES, not general responsibilities.
+
+### 2.8 Backoffice & Ops Probing
+
+For projects classified as Backoffice-admin tool or Hybrid in the Project Inventory:
+
+| Phase | Question Pattern |
+|-------|-----------------|
+| Bottleneck Discovery | "내부 운영팀의 가장 큰 병목이나 비효율은 무엇이었나요? 어떻게 파악하셨나요?" |
+| Systematic Solution | "그 병목을 해결하기 위해 어떤 시스템/도구를 기획하셨나요? 기존 프로세스와 어떻게 달랐나요?" |
+| Ops Stakeholder | "운영팀(내부 사용자)의 요구사항은 어떻게 수집하셨나요? 외부 사용자와 다른 점은?" |
+| Impact Measurement | "운영 효율화의 성과를 어떻게 측정하셨나요? (처리 시간, 오류율, 인력 절감 등)" |
+
+**Rule:** Treat operational stakeholders (운영팀, CS팀, 관리자) as "users" with needs to discover. Apply the same user-centered planning lens used for external users — backoffice planning is not just "building admin screens."
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-description: "Planner interview question generation guidelines: 6-perspective framework adapted for planners (Why/Trade-off/Stakeholder/How-Who/Validation/So-What with KPI+Prioritization+Domain integration), career level analysis strategies for planners, 8 portfolio signal detection, structured question format (Buildup/Deep-Dive/Evaluation Criteria), and ice breaking rules. Apply when generating, reviewing, or refining interview questions for planner (기획자) candidate assessment."
+description: "Planner interview question generation guidelines: 6-perspective framework adapted for planners (Why/Trade-off/Stakeholder/How-Who/Validation/So-What with KPI+Prioritization+Domain integration), career level analysis strategies for planners, 10 portfolio signal detection (including backoffice/ops efficiency and service lifecycle), structured question format (Buildup/Deep-Dive/Evaluation Criteria), hypothesis-verification cycle probing, and ice breaking rules. Apply when generating, reviewing, or refining interview questions for planner (기획자) candidate assessment."
 ---
 
 # Planner Interview Guidelines
@@ -73,6 +73,10 @@ The core analytical framework for deep-dive questions. Each project section MUST
 - "개발팀에 기획 의도를 전달할 때, 어떤 방식으로 커뮤니케이션하셨나요? (PRD, 와이어프레임, 구두 등)"
 - "기획안이 반려되거나 큰 수정을 요구받은 경험이 있나요? 어떻게 대응하셨나요?"
 
+**Signal Integration — Collaboration & Delivery Leadership:** When candidate has project delivery experience, probe milestone management and delivery role:
+- "프로젝트의 마일스톤은 어떻게 설정하고 관리하셨나요?"
+- "기획 결과물이 실제 배포까지 이어지는 과정에서 본인의 역할은?"
+
 ### 2.4 How / Who — 실행 과정 및 기여도
 
 **Assesses:** Planning process depth, artifact quality, personal contribution vs team boundary, cross-functional coordination
@@ -82,6 +86,12 @@ The core analytical framework for deep-dive questions. Each project section MUST
 - "기획부터 출시까지의 전체 프로세스에서 본인이 주도한 부분과 다른 팀원/조직이 담당한 부분의 경계는?"
 - "기획 과정에서 가장 어려웠던 의사결정은 무엇이었고, 어떻게 해결하셨나요?"
 - "디자이너/개발자와 협업할 때 기획 의도가 제대로 반영되었는지 어떻게 확인하셨나요?"
+- "작성하신 PRD의 구성과 상세도는 어느 수준이었나요?"
+- "복잡한 비즈니스 요구사항을 단순한 UX로 풀어낸 경험이 있나요?"
+
+**Signal Integration — Artifact Quality & UX Simplification:** Probe PRD/wireframe depth and UX simplification skill:
+- PRD quality probe: What sections did the PRD include? How did you ensure completeness?
+- UX simplification probe: How did you reduce complexity for the end user while meeting business requirements?
 
 ### 2.5 Validation / Risk — 사용자 검증 및 리스크 관리
 
@@ -92,6 +102,10 @@ The core analytical framework for deep-dive questions. Each project section MUST
 - "출시 전에 예상했던 리스크는 무엇이었고, 어떻게 대비하셨나요?"
 - "예상과 다른 사용자 반응이 나온 적이 있나요? 어떻게 대응하셨나요?"
 - "데이터가 부족한 상황에서 의사결정을 해야 했던 경험이 있나요? 어떤 근거로 판단하셨나요?"
+
+**Signal Integration — Hypothesis-Verification Cycle:** Probe the full data→hypothesis→verification cycle, not just generic data usage:
+- "가설을 세울 때 어떤 데이터(GA, 내부 로그 등)를 기반으로 하셨나요?"
+- "가설이 틀렸다는 것을 데이터로 확인한 경험이 있나요?"
 
 ### 2.6 So What — 성과 측정, KPI 및 회고
 
@@ -117,6 +131,7 @@ The core analytical framework for deep-dive questions. Each project section MUST
 | Must-include for scope/priority decisions | Why Not/Trade-off |
 | Must-include for cross-functional projects | Stakeholder & Communication + How/Who |
 | Must-include for KPI-driven initiatives | So What (with KPI probes) |
+| Must-include for backoffice/internal tool projects | How/Who + Stakeholder & Communication |
 
 ---
 
@@ -155,12 +170,15 @@ The core analytical framework for deep-dive questions. Each project section MUST
 - **Cross-functional influence:** Aligning diverse stakeholders without formal authority
 - **Data-driven iteration:** Using metrics to validate, pivot, or kill features
 - **Organizational impact:** Improving team processes, establishing planning frameworks
+- **Operational efficiency mindset:** Considering how features affect internal operations and backoffice workflows
+- **Service lifecycle breadth:** Experience across launch, growth, maturity, and sunset phases of a service
 
 **Question Strategy (Impact Focus):**
 - **Strategic trade-offs:** "여러 기획 건의 우선순위를 어떻게 조율하셨나요? 사업적 긴급성과 사용자 가치가 충돌할 때는?"
 - **Stakeholder persuasion:** "경영진이나 사업부의 요구와 사용자 니즈가 상충할 때 어떻게 설득하셨나요?"
 - **Data-driven pivot:** "출시 후 데이터를 보고 기획 방향을 크게 수정한 경험이 있나요? 그 과정은?"
 - **Process improvement:** "기획 프로세스 자체를 개선하거나 새로운 프레임워크를 도입한 경험이 있나요?"
+- **Operational planning:** "기획한 기능이 내부 운영에 미치는 영향을 어떻게 고려하셨나요? 백오피스나 운영 효율화를 위해 기획한 경험이 있나요?"
 
 **KPI Integration (Core/Advanced level):** Senior must have DESIGNED KPI systems and used them for decision-making.
 - "KPI 체계를 직접 설계하신 경험이 있나요? 어떤 지표를 어떻게 선정하셨나요?"
@@ -174,7 +192,7 @@ The core analytical framework for deep-dive questions. Each project section MUST
 
 ## 4. Portfolio Signal Analysis
 
-Read between the lines of planner resumes. Detect these 8 signals and design questions to probe them.
+Read between the lines of planner resumes. Detect these 10 signals and design questions to probe them.
 
 ### Signal 1: "Facilitated" vs "Drove"
 
@@ -223,8 +241,9 @@ Read between the lines of planner resumes. Detect these 8 signals and design que
 | "퍼널 분석으로 이탈 구간 발견" | Analytical depth | "발견한 이탈 구간에 대해 어떤 가설을 세우고 어떻게 검증했나요?" |
 | Metrics mentioned without analysis context | Passive data exposure | "이 수치를 보고 어떤 액션을 취하셨나요?" |
 | No data-related activity | Data gap | "의사결정 시 데이터를 활용한 경험이 있나요?" |
+| "GA/로그 기반 가설 수립 → 검증" | Hypothesis-driven data use | "가설을 세울 때 어떤 데이터를 기반으로 했고, 검증은 어떻게 하셨나요?" |
 
-**Rule:** Assess whether the candidate USES data to make decisions, not just reports data.
+**Rule:** Assess whether the candidate USES data to make decisions, not just reports data. Specifically probe the hypothesis→verification cycle when data tools (GA, internal logs) are mentioned.
 
 ### Signal 6: KPI Awareness
 
@@ -255,6 +274,26 @@ Read between the lines of planner resumes. Detect these 8 signals and design que
 | Domain overlap 없음 | Low relevance — assess adaptability | "새로운 도메인에 적응할 때 어떤 방식으로 사용자를 이해하시나요?" |
 
 **Rule:** Domain understanding assesses PLANNING COMPETENCY within domain context, NOT domain knowledge quiz. Focus on how the candidate applies planning skills to understand new/similar domains.
+
+### Signal 9: Backoffice/Ops Efficiency Planning
+
+| Evidence | Assessment | Probe |
+|----------|-----------|-------|
+| Backoffice/admin tool planning experience | Strong — operational planning awareness | "백오피스 기획 시 내부 사용자(운영팀)의 니즈를 어떻게 파악하셨나요?" |
+| Feature planning with operational impact consideration | Moderate — ops awareness shown | "이 기능이 내부 운영 프로세스에 미치는 영향을 어떻게 고려하셨나요?" |
+| No backoffice or operational efficiency mention | Weak — ops efficiency blind spot | "사용자 기능 외에 내부 운영 효율화를 위한 기획을 해본 경험이 있나요?" |
+
+**Rule:** Backoffice/ops planning reveals whether the candidate considers the full operational impact of features, not just user-facing value. For candidates with backoffice project experience, this is a mandatory probe area.
+
+### Signal 10: Service Lifecycle Experience (우대사항)
+
+| Evidence | Assessment | Probe |
+|----------|-----------|-------|
+| Experience across launch + growth + maturity/sunset phases | Strong — full lifecycle perspective | "서비스의 어떤 단계(초기/성장/성숙)에서 기획하셨고, 단계별로 기획 접근이 어떻게 달랐나요?" |
+| Experience in 1-2 lifecycle phases only | Moderate — partial lifecycle breadth | "서비스가 성장 단계를 지나면 기획 관점에서 어떤 것이 달라진다고 생각하시나요?" |
+| No lifecycle context mentioned | Unclear — cannot assess | "기획하셨던 서비스가 어떤 성장 단계에 있었나요?" |
+
+**Rule:** Service lifecycle experience is a 우대사항 (preferred qualification), not a disqualifying criterion. Assess breadth of lifecycle understanding, but do not penalize candidates who lack it. Use as a differentiator for equally strong candidates.
 
 ---
 
@@ -309,9 +348,9 @@ Follow-up questions should flow: **problem definition → alternatives → stake
 
 | Level | Purpose | Format | Applies To |
 |-------|---------|--------|-----------|
-| Hygiene Check | Basic planner competency | Binary: Pass / Fail | Problem articulation, user awareness, basic metrics, KPI concept |
-| Core Competency | Practical planning depth | Gradient: Plus / Minus | Data-driven reasoning, stakeholder management, structured prioritization, user validation, KPI-based decisions |
-| Advanced Insight | Senior-level strategic thinking | Gradient: Plus / Minus | Market positioning, cross-functional influence, product vision, KPI system design, portfolio-level prioritization |
+| Hygiene Check | Basic planner competency | Binary: Pass / Fail | Problem articulation, user awareness, basic metrics, KPI concept, PRD artifact awareness |
+| Core Competency | Practical planning depth | Gradient: Plus / Minus | Data-driven reasoning, stakeholder management, structured prioritization, user validation, KPI-based decisions, hypothesis-verification cycle, PRD/wireframe quality, milestone/delivery management |
+| Advanced Insight | Senior-level strategic thinking | Gradient: Plus / Minus | Market positioning, cross-functional influence, product vision, KPI system design, portfolio-level prioritization, backoffice/ops efficiency planning, service lifecycle perspective, UX simplification mastery |
 
 ### 5.6 Timing Guide
 
@@ -331,4 +370,5 @@ Follow-up questions should flow: **problem definition → alternatives → stake
 - [ ] KPI/Impact metric question: at least 1 per document (must probe KPI definition process)
 - [ ] Stakeholder/cross-functional question: at least 1 per document
 - [ ] All questions within project sections (no separate verification section)
+- [ ] Hypothesis-verification cycle question: at least 1 per document (must probe full data→hypothesis→verification cycle)
 - [ ] 30-minute timing is feasible

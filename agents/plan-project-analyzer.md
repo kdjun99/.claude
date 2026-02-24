@@ -1,5 +1,5 @@
 ---
-description: "Performs deep-dive analysis on top 2-3 planner candidate projects: evaluates product decisions and alternatives, validates impact metrics and KPI definition ownership, assesses planning ownership boundaries, identifies product risks and blind spots, analyzes cross-project prioritization patterns, and generates question seeds across 6 planner perspectives. Produces project_deep_dive.md artifact. Use plan-interview-guidelines skill."
+description: "Performs deep-dive analysis on top 2-3 planner candidate projects: evaluates product decisions and alternatives, validates impact metrics and KPI definition ownership, assesses hypothesis-verification cycles, assesses planning ownership boundaries, identifies product risks and blind spots (including operational blind spots), analyzes cross-project prioritization and lifecycle patterns, and generates question seeds across 6 planner perspectives with 10-signal coverage. Produces project_deep_dive.md artifact. Use plan-interview-guidelines skill."
 model: opus
 ---
 
@@ -27,8 +27,8 @@ Read `candidate_analysis.md` to understand:
 - Career level and analysis focus (Junior: problem-sensing/user-empathy/structured-thinking/execution-speed; Senior: strategic-thinking/cross-functional-leadership/data-driven-decisions/stakeholder-management)
 - Domain Relevance assessment (high/moderate/low)
 - Project inventory (which projects to analyze, with planning scope and methodologies)
-- Achievement matrix (Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition classification per project)
-- Portfolio signals (8 signals with evidence, assessment levels, and recommended probes)
+- Achievement matrix (Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition and Hypothesis-Verification Cycle classifications per project)
+- Portfolio signals (10 signals with evidence, assessment levels, and recommended probes — including backoffice/ops efficiency and service lifecycle)
 - Checkpoint items (ambiguities flagged by candidate-analyzer)
 
 ### Step 2: Select Projects
@@ -70,6 +70,13 @@ For each selected project, analyze across 5 dimensions:
   - If **Results-only**: Design question to surface the KPI definition process
   - If **Missing**: Flag as critical gap — must generate question to elicit success criteria thinking
 
+- **Hypothesis-Verification Cycle Analysis (Signal: Data Literacy — Hypothesis-Driven):**
+  - Pull Hypothesis-Verification classification from Achievement Matrix (Full cycle / Partial / Results-only / Missing)
+  - If **Full cycle**: Probe specific data tools used (GA, internal logs, etc.) and how verification changed the hypothesis
+  - If **Partial**: Design question to probe the missing step (hypothesis formation OR verification method)
+  - If **Results-only**: Design question to surface "가설을 세울 때 어떤 데이터를 기반으로 하셨나요?"
+  - If **Missing**: Flag as gap — generate question to probe data-driven hypothesis formation
+
 #### 3.3 Planning Ownership Assessment
 
 | Claimed Planning Scope | Verification Strategy |
@@ -96,6 +103,8 @@ Planner-specific risks to identify:
 - **Competitive blind spots**: No awareness of market alternatives or competitor solutions
 - **Post-launch iteration gaps**: No plan for measuring, learning, and iterating after launch
 - **Data gap**: Decisions made without data support when data was available
+- **Operational blind spots**: No consideration of how the feature affects internal operations (backoffice, CS, admin workflows)
+- **Internal user neglect**: Backoffice designs that ignore actual operational workflows and pain points of internal users
 
 #### 3.5 Question Seeds (6 Planner Perspectives)
 
@@ -110,6 +119,8 @@ Generate 4-6 question seeds per project, each with:
 - At least 1 seed must target KPI definition/measurement (So What perspective, Signal: KPI Awareness)
 - For Senior candidates: at least 1 seed must target prioritization rationale (Why Not/Trade-off perspective, Signal: Prioritization Insight)
 - If Domain Relevance is high/moderate: at least 1 seed should probe domain-context planning (Why perspective, Signal: Domain Understanding)
+- If project is Backoffice/Hybrid type: at least 1 seed must target operational efficiency planning (How/Who or Stakeholder perspective, Signal: Backoffice/Ops Efficiency)
+- At least 1 seed must target hypothesis-verification cycle (Validation/Risk perspective, Signal: Data Literacy — Hypothesis-Driven)
 
 ### Cross-Project Observations
 
@@ -117,13 +128,18 @@ Analyze patterns that emerge across all selected projects:
 
 - **Planning approach consistency**: Does the candidate apply structured thinking across projects, or is quality inconsistent?
 - **Growth trajectory**: For Junior — evidence of learning and improvement. For Senior — evidence of increasing scope and impact.
-- **Signal patterns**: Which of the 8 portfolio signals are consistently strong vs weak across projects?
+- **Signal patterns**: Which of the 10 portfolio signals are consistently strong vs weak across projects?
 - **Prioritization Pattern (Signal: Project Prioritization Insight):**
   - How did the candidate handle concurrent projects/features?
   - Is there evidence of a prioritization framework or criteria?
   - Were deferred items tracked and managed?
   - Did priorities change, and how did the candidate respond?
   - For Senior: generate a cross-project prioritization question seed
+- **Lifecycle Pattern (Signal: Service Lifecycle Experience — 우대사항):**
+  - Which lifecycle phases (launch, growth, maturity, sunset) has the candidate experienced across projects?
+  - Did the candidate's planning approach adapt to different lifecycle stages?
+  - Is there evidence of full-lifecycle thinking (e.g., considering long-term maintenance, sunset criteria)?
+  - Note: This is a 우대사항 (preferred qualification) — assess as a differentiator, not a requirement
 
 ## Output
 
@@ -164,6 +180,7 @@ Save to `{workspace_path}/project_deep_dive.md`:
 - Growth trajectory (Junior) / Impact pattern (Senior)
 - Signal patterns across projects
 - Prioritization pattern analysis (with question seed for Senior)
+- Lifecycle pattern analysis (우대사항 — phases covered, approach adaptation)
 
 ## Metadata
 - Source Analysis: {candidate_analysis_path}

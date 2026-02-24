@@ -1,5 +1,5 @@
 ---
-description: "Reads candidate resume and portfolio PDFs, extracts structured planner profile (name, career level, education, projects, methodologies, planning scope, achievements, business/user impact metrics), creates candidate summary card with Domain Relevance field, project inventory with planning scope, achievement matrix (Problem→Approach→Impact) with KPI definition dimension, and 8 portfolio signals. Produces candidate_analysis.md artifact. Use plan-interview-guidelines and plan-question-formatter skills."
+description: "Reads candidate resume and portfolio PDFs, extracts structured planner profile (name, career level, education, projects, methodologies, planning scope, achievements, business/user impact metrics), creates candidate summary card with Domain Relevance field, project inventory with planning scope and project type, achievement matrix (Problem→Approach→Impact) with KPI definition and hypothesis-verification cycle dimensions, and 10 portfolio signals (including backoffice/ops efficiency and service lifecycle). Produces candidate_analysis.md artifact. Use plan-interview-guidelines and plan-question-formatter skills."
 model: opus
 ---
 
@@ -61,6 +61,7 @@ For each project found in the portfolio, extract:
 | Field | What to Extract | Required |
 |-------|----------------|----------|
 | Project Name / Duration / Team Composition | From project header/intro, including cross-functional team structure (PM, designer, developer, etc.) | Yes |
+| Project Type | User-facing feature / Backoffice-admin tool / Hybrid — classify based on primary target user (end user vs internal ops/admin) | Yes |
 | Product Goal & Hypothesis | What problem was being solved, for whom, what was the hypothesis | Yes |
 | Methodologies | User research, A/B testing, prototyping, PRD, wireframe, data analysis — note which were personally conducted vs team-led | Yes |
 | Personal Planning Scope | Specific scope of planning responsibility (e.g., "요구사항 정의 100%, 이해관계자 조율 70%") — record as specific responsibilities, not just percentages | Yes |
@@ -94,9 +95,20 @@ For each project, additionally assess:
 | Results mentioned without KPI context | **Results-only** — design question to probe KPI definition process |
 | No success criteria mentioned | **Missing** — flag as gap, design question to elicit |
 
-### Step 5: Portfolio Signal Analysis (8 Signals)
+**Hypothesis-Verification Cycle Dimension (Signal: Data Literacy — Hypothesis-Driven):**
 
-Apply plan-interview-guidelines skill Section 4 to detect all 8 signals:
+For each project, additionally assess the hypothesis-verification cycle:
+
+| Hypothesis-Verification Evidence | Classification |
+|----------------------------------|---------------|
+| Full cycle: data-based hypothesis → experiment/test → data verification of results | **Full cycle** — strong hypothesis-driven planning signal |
+| Partial: hypothesis mentioned but verification unclear, or verification without clear hypothesis | **Partial** — design question to probe missing steps |
+| Results reported without hypothesis context | **Results-only** — design question to probe hypothesis formation process |
+| No hypothesis or data-driven validation mentioned | **Missing** — flag as gap, probe data usage in planning decisions |
+
+### Step 5: Portfolio Signal Analysis (10 Signals)
+
+Apply plan-interview-guidelines skill Section 4 to detect all 10 signals:
 
 | # | Signal | What to Look For | Assessment |
 |---|--------|-----------------|-----------|
@@ -104,10 +116,12 @@ Apply plan-interview-guidelines skill Section 4 to detect all 8 signals:
 | 2 | Metric Attribution | Business metrics that seem org-level vs personally attributable | Flag suspicious claims |
 | 3 | Decision Ownership | Vague planning scope vs specific decision boundaries | Flag vague claims |
 | 4 | User Research Evidence | Generic "사용자 조사" vs specific methods with sample sizes | Assess depth per project |
-| 5 | Data Literacy Signal | Active data use (A/B test design) vs passive exposure (reporting) | Assess per project |
+| 5 | Data Literacy Signal | Active data use (A/B test design) vs passive exposure (reporting); hypothesis-driven data use (GA/log-based hypothesis → verification cycle) | Assess per project |
 | 6 | KPI Awareness | KPI explicitly defined vs results without KPI context vs no success criteria | Assess per project (from Step 4) |
 | 7 | Project Prioritization Insight | Prioritization framework mentioned, multiple projects with timeline context, or single project focus only | Assess across projects |
 | 8 | Domain Understanding | 대외활동/채용/교육 플랫폼 experience, B2C platform experience, or no domain overlap | Assess from Summary Card |
+| 9 | Backoffice/Ops Efficiency Planning | Backoffice/admin tool planning experience, operational impact consideration, or no ops mention | Assess from Project Type classification |
+| 10 | Service Lifecycle Experience (우대사항) | Experience across launch/growth/maturity/sunset phases vs single-phase only | Assess across projects |
 
 **For each signal, provide:**
 - Evidence: Quote or paraphrase from the document
@@ -126,6 +140,8 @@ List any ambiguities or missing information that the human reviewer should addre
 | Planning scope clarity | Clear / Vague | Flag projects with unclear contribution boundaries |
 | KPI definition evidence | Present / Ambiguous / Missing | Note if candidate defines KPIs or just reports results |
 | Stakeholder context | Clear / Missing | Flag if cross-functional team structure is unclear |
+| Backoffice/ops planning evidence | Present / Missing | Flag if candidate has backoffice project but no operational efficiency consideration |
+| Service lifecycle breadth | Full / Partial / Missing | 우대사항 — not disqualifying, but note lifecycle phases covered |
 
 ## Output
 
@@ -141,10 +157,10 @@ Save to `{workspace_path}/candidate_analysis.md`:
 (from Step 3 — table format, one per project)
 
 ## Achievement Matrix
-(from Step 4 — per-project Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition classification)
+(from Step 4 — per-project Problem/Opportunity → Planning Approach → Business/User Impact, with KPI Definition and Hypothesis-Verification Cycle classifications)
 
 ## Portfolio Signals
-(from Step 5 — 8-signal assessment with evidence, assessment level, and recommended probes)
+(from Step 5 — 10-signal assessment with evidence, assessment level, and recommended probes)
 
 ## Checkpoint: Items for Human Review
 (from Step 6 — table of ambiguities/missing info)
