@@ -69,20 +69,15 @@ Before generating questions, verify:
 
 ## 2. Question Design Rules
 
-### 2.1 Follow-Up Question Flow
+### 2.1 Follow-Up Chain Design (꼬리 질문 체인)
 
-All deep-dive questions MUST follow this 4-step flow:
+All deep-dive questions MUST be designed as **pressure funnels** using the `interview-pressure-probing` skill. Each question needs a multi-layer follow-up chain with conditional branches.
 
-```
-Problem Definition → Alternatives → Stakeholder Alignment → Impact Measurement
-```
-
-| Step | Pattern | Example |
-|------|---------|---------|
-| 1. Problem Definition | "What problem were you solving?" | "이 기획의 배경과 해결하려는 문제는 무엇이었나요?" |
-| 2. Alternatives | "What else did you consider?" | "다른 접근 방식도 고려하셨나요? 왜 이 방향을 선택했나요?" |
-| 3. Stakeholder Alignment | "How did you align stakeholders?" | "관련 이해관계자들과 어떻게 합의를 이루셨나요?" |
-| 4. Impact Measurement | "How did you measure success?" | "기획의 성과를 어떻게 측정했고, 결과는 어땠나요?" |
+**Key rules (detail in `interview-pressure-probing` skill):**
+- Minimum depth: **3 layers** per question (L1→L2→L3). L4-L5 = interviewer discretion.
+- Must include **conditional branches** (concrete answer → go deeper / vague answer → redirect)
+- Must include **at least 1 trap point** per project section
+- The previous 4-step lateral flow (Problem Definition → Alternatives → Stakeholder Alignment → Impact Measurement) is now embedded as **probe patterns within each layer**, not as the primary structure. The PRIMARY structure is the **vertical depth chain (L1→L2→L3+)**.
 
 ### 2.2 Product Decision Probing
 
@@ -215,16 +210,25 @@ For projects classified as Backoffice-admin tool or Hybrid in the Project Invent
 ```markdown
 ### [Symbolic Korean Title]
 - **연관 기능 (Related Feature):** [specific feature/initiative]
-- **빌드업 질문 (Buildup Question):** [easy entry point question — "~~ 기능을 기획하게 된 배경이 무엇인가요?"]
-- **핵심 질문 (Deep Dive Question):**
-  - [probing question 1 — problem definition]
-  - [probing question 2 — alternatives/stakeholders]
-  - [probing question 3 — impact/KPI]
+- **빌드업 질문 (Buildup Question):** [= L1 Surface — easy entry point]
+- **꼬리 질문 체인 (Follow-up Chain):**
+  - **L2 (구체화):** [specifics probe — pin down vague claims]
+    - → 구체적 답변 시: [deeper follow-up]
+    - → 모호한 답변 시: [redirect to verifiable aspect]
+  - **L3 (교차검증):** [cross-check with other claims or logical implications]
+  - **L4 (깊이):** [edge case / internal decision rationale — interviewer discretion]
+- **함정 포인트 (Trap Point):** [what inconsistency to watch for + how to probe it]
 - **평가 기준 (Evaluation Criteria):**
   - **[Hygiene Check]:** Pass — [OK signal] / Fail — [Red Flag signal]
   - **[Core Competency]:** Plus — [depth indicator] / Minus — [shallow indicator]
   - **[Advanced Insight]:** Plus — [senior insight] / Minus — [limited perspective]
 ```
+
+**Template Rules:**
+- `빌드업 질문` = L1 (deliberately easy, builds false comfort)
+- `꼬리 질문 체인` replaces the old `핵심 질문` — must have ≥3 layers with conditional branches
+- `함정 포인트` = pre-designed inconsistency detector (at least 1 per project section, can be shared across questions)
+- See `interview-pressure-probing` skill Section 6 for full format specification
 
 ### 3.4 Timing Guide Template
 
@@ -250,8 +254,11 @@ Every planner interview document MUST satisfy ALL of the following:
 | 4 | KPI/Impact metric question | At least 1 per document probing KPI definition process | Search for KPI selection/measurement/tracking questions — generic metric questions alone are insufficient |
 | 5 | Stakeholder/cross-functional question | At least 1 per document | Search for stakeholder alignment/conflict resolution/cross-functional coordination questions |
 | 6 | Project-based grouping | All questions in project sections | Verify no orphan "verification" or "additional" sections |
-| 7 | Timing feasibility | Total ~30 min | Sum timing guide, verify 28-35 min range |
+| 7 | Timing guide | Included (advisory) | Verify timing guide table exists (not a hard constraint) |
 | 8 | Problem definition question | At least 1 per document probing problem framing process | Search for problem definition/framing/validation questions — generic "배경이 뭔가요?" alone is insufficient |
+| 9 | Follow-up chain depth | ≥3 layers per question | Each question has L1(빌드업) + L2 + L3 minimum in 꼬리 질문 체인 |
+| 10 | Conditional branches | ≥1 branch per chain | Check for "구체적 답변 시" / "모호한 답변 시" patterns |
+| 11 | Trap points | ≥1 per project section | Check 함정 포인트 field exists in at least 1 question per project |
 
 ### Failure Protocol
 

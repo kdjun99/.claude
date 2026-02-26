@@ -1,5 +1,5 @@
 ---
-description: "Performs deep-dive analysis on top 2-3 planner candidate projects: evaluates product decisions and alternatives, validates impact metrics and KPI definition ownership, assesses hypothesis-verification cycles, evaluates problem definition quality, assesses planning ownership boundaries, identifies product risks and blind spots (including operational blind spots), analyzes cross-project prioritization and lifecycle patterns, and generates question seeds across 6 planner perspectives with 10-signal coverage. Produces project_deep_dive.md artifact. Use plan-interview-guidelines skill."
+description: "Performs deep-dive analysis on top 2-3 planner candidate projects: evaluates product decisions and alternatives, validates impact metrics and KPI definition ownership, assesses hypothesis-verification cycles, evaluates problem definition quality, assesses planning ownership boundaries, identifies product risks and blind spots (including operational blind spots), detects contradictions for trap points, analyzes cross-project prioritization and lifecycle patterns, and generates pressure-chain question seeds across 6 planner perspectives with 10-signal coverage. Produces project_deep_dive.md artifact. Use plan-interview-guidelines and interview-pressure-probing skills."
 model: opus
 ---
 
@@ -109,13 +109,31 @@ Planner-specific risks to identify:
 - **Operational blind spots**: No consideration of how the feature affects internal operations (backoffice, CS, admin workflows)
 - **Internal user neglect**: Backoffice designs that ignore actual operational workflows and pain points of internal users
 
-#### 3.5 Question Seeds (6 Planner Perspectives)
+#### 3.5 Contradiction & Trap Point Analysis
+
+Analyze the candidate's claims for potential inconsistencies that can be used as trap points in follow-up chains (see `interview-pressure-probing` skill Section 3).
+
+| Claim | Potential Inconsistency | Trap Type | Suggested Trap Question |
+|-------|------------------------|-----------|------------------------|
+
+Check for these planner-specific contradiction types:
+- **Impact Attribution Inflation**: Claiming org-level metrics (MAU, revenue) as personal planning outcomes without causal link
+- **Timeline Conflict**: Short duration + large planning scope (e.g., "3개월 동안 전체 서비스 기획 리드")
+- **Ownership Inflation**: "100% 기획 리드" but team had senior PM or product owner
+- **KPI Fabrication**: Precise KPI numbers without measurement methodology or tracking infrastructure
+- **Methodology Gap**: Claims user research but no specifics on method, sample size, or findings
+- **Cross-Project Contradiction**: Inconsistent role claims across projects (e.g., "기획 리드" in A but "팀원" in B with overlapping timelines)
+- **Solution-First Gap**: Claims problem-driven approach but project description starts with solution, not problem
+
+#### 3.6 Question Seeds (6 Planner Perspectives)
 
 Generate 4-6 question seeds per project, each with:
 - **Topic**: What aspect to probe
 - **Perspective**: Which of the 6 planner perspectives (Why / Why Not-Trade-off / Stakeholder / How-Who / Validation-Risk / So What)
 - **Difficulty**: Hygiene / Core / Advanced
 - **Probe angle**: Specific question direction
+- **Pressure path**: Suggested L1→L2→L3 chain direction (see `interview-pressure-probing` skill Section 1)
+- **Trap point**: Which contradiction/inconsistency this seed can expose (from Section 3.5 analysis)
 
 **Coverage requirements:**
 - Minimum 4 of 6 planner perspectives per project
@@ -170,8 +188,11 @@ Save to `{workspace_path}/project_deep_dive.md`:
 ### Product Risks & Blind Spots
 (table from 3.4)
 
+### Contradiction & Trap Points
+(table from 3.5 — claim, inconsistency, trap type, trap question)
+
 ### Question Seeds
-(list from 3.5 — topic, perspective, difficulty, angle)
+(list from 3.6 — topic, perspective, difficulty, angle, pressure path, trap point)
 
 ## Project B: {name}
 (same structure)
@@ -203,3 +224,6 @@ Save to `{workspace_path}/project_deep_dive.md`:
 - Each question seed must have a clear purpose — no filler
 - At least 1 problem definition question seed per project (probing framing process, not just problem identification)
 - Planning ownership probes must target specific DECISIONS and DIFFICULTIES, not general responsibilities
+- Each project MUST have at least 1 trap point identified in the Contradiction & Trap Points analysis
+- Pressure paths in question seeds should follow the 5-layer depth model from `interview-pressure-probing` skill
+- Cross-project contradictions are especially valuable — always check for timeline overlaps and inconsistent role claims

@@ -1,5 +1,5 @@
 ---
-description: "Generates structured 30-minute planner interview questions from candidate analysis and project deep-dive: ice breaking (2-4) with optional domain-fit question, project-based questions (3-6 per project) covering min 4 of 6 planner perspectives, ensuring ≥1 KPI question, ≥1 hypothesis-verification cycle question, ≥1 problem definition capability probing question, ≥1 prioritization question (Senior), and backoffice/ops question (if applicable), with Buildup/Deep-Dive/Evaluation Criteria format. Produces interview_questions_draft.md. Use plan-interview-guidelines and plan-question-formatter skills."
+description: "Generates structured planner interview questions from candidate analysis and project deep-dive: ice breaking (2-4) with optional domain-fit question, project-based questions (3-6 per project) covering min 4 of 6 planner perspectives, ensuring ≥1 KPI question, ≥1 hypothesis-verification cycle question, ≥1 problem definition capability probing question, ≥1 prioritization question (Senior), and backoffice/ops question (if applicable), with pressure-funnel follow-up chains (L1→L2→L3+), conditional branches, and trap points. Produces interview_questions_draft.md. Use plan-interview-guidelines, plan-question-formatter, and interview-pressure-probing skills."
 model: sonnet
 ---
 
@@ -48,17 +48,20 @@ Following plan-interview-guidelines Section 1:
 
 For each selected project (from project_deep_dive.md):
 
-1. Review the question seeds from plan-project-analyzer
-2. Expand each seed into a full structured question following plan-question-formatter Section 3.3:
+1. Review the question seeds AND contradiction/trap point analysis from plan-project-analyzer
+2. Expand each seed into a full structured question following the **pressure-funnel format** from `interview-pressure-probing` skill Section 6 and `plan-question-formatter` Section 3.3:
 
 ```markdown
 ### [Symbolic Korean Title]
 - **연관 기능 (Related Feature):** [specific feature/initiative]
-- **빌드업 질문 (Buildup Question):** [easy entry — "~~ 기능을 기획하게 된 배경이 무엇인가요?"]
-- **핵심 질문 (Deep Dive Question):**
-  - [probing question 1 — problem definition]
-  - [probing question 2 — alternatives/stakeholders]
-  - [probing question 3 — impact/KPI]
+- **빌드업 질문 (Buildup Question):** [= L1 Surface — deliberately easy entry point]
+- **꼬리 질문 체인 (Follow-up Chain):**
+  - **L2 (구체화):** [pin down vague claims to concrete details]
+    - → 구체적 답변 시: [go deeper — decision rationale, stakeholder dynamics]
+    - → 모호한 답변 시: [redirect to something verifiable — specific decisions, artifacts, metrics]
+  - **L3 (교차검증):** [cross-check with other claims from portfolio or logical implications]
+  - **L4 (깊이):** [edge case or deeper decision rationale — interviewer discretion]
+- **함정 포인트 (Trap Point):** [what inconsistency to watch for + how to probe]
 - **평가 기준 (Evaluation Criteria):**
   - **[Hygiene Check]:** Pass — [...] / Fail — [...]
   - **[Core Competency]:** Plus — [...] / Minus — [...]
@@ -67,14 +70,11 @@ For each selected project (from project_deep_dive.md):
 
 3. Ensure minimum 4 of 6 planner perspectives covered per project (Why / Why Not-Trade-off / Stakeholder / How-Who / Validation-Risk / So What)
 4. Keep to 3-6 questions per project
-5. Apply career-level-appropriate depth:
-   - **Junior**: Focus on problem-sensing, user empathy, structured thinking, execution follow-through
-   - **Senior**: Focus on strategic trade-offs, cross-functional leadership, data-driven decisions, stakeholder management
-
-**Deep dive flow:** All deep-dive questions follow the 4-step planner flow:
-```
-Problem Definition → Alternatives → Stakeholder Alignment → Impact Measurement
-```
+5. **Each question MUST have a ≥3 layer follow-up chain** with at least 1 conditional branch
+6. **Each project section MUST have at least 1 trap point** (can be shared if a trap point spans multiple questions)
+7. Apply career-level-appropriate pressure depth (see `interview-pressure-probing` skill Section 5):
+   - **Junior**: L1-L3 focus. Pressure on problem-sensing, user empathy, structured thinking
+   - **Senior**: L1-L5 focus. Pressure on strategic trade-offs, cross-functional leadership, data-driven decisions
 
 **KPI question requirement (Signal: KPI Awareness):**
 - MUST generate ≥1 question per document that probes KPI definition process
@@ -159,8 +159,11 @@ Before saving, verify against plan-question-formatter Section 4:
 | 4 | KPI/Impact metric question: ≥1 probing KPI definition process | ✓/✗ |
 | 5 | Stakeholder/cross-functional question: ≥1 | ✓/✗ |
 | 6 | All questions in project sections (no orphan sections) | ✓/✗ |
-| 7 | Timing feasible (~30 min, 28-35 range) | ✓/✗ |
+| 7 | Timing guide included (advisory) | ✓/✗ |
 | 8 | Problem definition question: ≥1 probing problem framing process | ✓/✗ |
+| 9 | Follow-up chain depth: ≥3 layers per question | ✓/✗ |
+| 10 | Conditional branches: ≥1 per chain | ✓/✗ |
+| 11 | Trap points: ≥1 per project section | ✓/✗ |
 
 If any criterion fails, fix before saving.
 
@@ -215,13 +218,15 @@ Save to `{workspace_path}/interview_questions_draft.md`:
 ## Quality Rules
 
 - Questions must be in Korean (this is a Korean-language interview)
-- Buildup questions must be genuinely easy — not disguised deep-dives
-- Deep-dive questions must follow the 4-step planner flow (problem definition → alternatives → stakeholder alignment → impact measurement)
+- Buildup questions (L1) must be genuinely easy — not disguised deep-dives. They build false comfort.
+- Follow-up chains must progressively tighten — each layer narrows the candidate's escape routes
+- Conditional branches must be realistic — "구체적 답변 시" and "모호한 답변 시" paths should both be useful probes
+- Trap points must be natural — they're questions honest candidates answer easily, not trick questions
 - Evaluation criteria must be specific and actionable, not generic
 - Each Hygiene Check must define a clear Pass/Fail boundary
 - Hygiene level MUST include KPI concept awareness (Signal: KPI Awareness)
 - Core level MUST include KPI-based decision-making and feature-level prioritization
 - Advanced level MUST include KPI system design and portfolio-level prioritization (Senior)
 - Never generate filler questions — every question must serve a verification purpose
-- Respect the 30-minute constraint — don't over-generate
+- **Question depth > timing constraint** — do NOT cut follow-up chains to fit 30 minutes. The timing guide is advisory.
 - Prioritize questions that reveal planning PROCESS over questions that test domain knowledge

@@ -371,7 +371,15 @@ Follow-up questions should flow: **problem definition → alternatives → stake
 | Common/Wrap-up | 5-10 min | Collaboration, learning, closing |
 | **Total** | **~30 min** | |
 
-### 5.7 Quality Checklist (must pass before delivery)
+### 5.7 Timing Flexibility
+
+The 30-minute timing guide is **advisory, not a hard cap**. Question depth and quality take priority over timing constraints. The interviewer can dynamically skip, compress, or extend during the actual interview.
+
+- **When generating questions**: Optimize for question DEPTH over question COUNT
+- **Timing guide**: Still produce one, but label it "advisory" and note that interviewers should prioritize deep follow-up chains over time budgets
+- **Do NOT cut follow-up chains** to fit the 30-minute window
+
+### 5.8 Quality Checklist (must pass before delivery)
 
 - [ ] Ice breaking: 2-4 questions included
 - [ ] Questions per project: 3-6 range maintained
@@ -381,4 +389,8 @@ Follow-up questions should flow: **problem definition → alternatives → stake
 - [ ] All questions within project sections (no separate verification section)
 - [ ] Hypothesis-verification cycle question: at least 1 per document (must probe full data→hypothesis→verification cycle)
 - [ ] Problem definition question: at least 1 per document (must probe problem framing process, not just problem identification)
-- [ ] 30-minute timing is feasible
+- [ ] Follow-up chain depth: each question has ≥3 layer follow-up chain (see `interview-pressure-probing` skill)
+- [ ] Trap points: at least 1 trap point per project section (see `interview-pressure-probing` skill)
+- [ ] Timing guide included (advisory)
+
+> **Note:** For progressive pressure probing techniques (5-layer depth model, conditional branches, trap points, knowledge boundary mapping), see the **`interview-pressure-probing`** skill. It is a required companion to this skill for all interview question generation.

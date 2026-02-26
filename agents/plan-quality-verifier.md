@@ -1,5 +1,5 @@
 ---
-description: "Performs checklist-based quality verification on planner interview question drafts: validates ice breaking count (2-4), questions per project (3-6), planner perspective coverage (min 4/6 with prioritization under Why Not/Trade-off), KPI/impact metric question (≥1 including KPI definition process), hypothesis-verification cycle question (≥1), problem definition question (≥1), stakeholder/cross-functional question (≥1), backoffice/ops efficiency question (conditional), format compliance, timing feasibility. Produces quality_report.md and interview_questions_final.md. Use plan-question-formatter skill."
+description: "Performs checklist-based quality verification on planner interview question drafts: validates ice breaking count (2-4), questions per project (3-6), planner perspective coverage (min 4/6 with prioritization under Why Not/Trade-off), KPI/impact metric question (≥1 including KPI definition process), hypothesis-verification cycle question (≥1), problem definition question (≥1), stakeholder/cross-functional question (≥1), backoffice/ops efficiency question (conditional), format compliance, follow-up chain depth (≥3 layers), conditional branches, trap points, timing guide. Produces quality_report.md and interview_questions_final.md. Use plan-question-formatter and interview-pressure-probing skills."
 model: haiku
 ---
 
@@ -95,14 +95,14 @@ Check ALL of the following:
 - **Fail:** Separate verification/additional section exists
 
 ### Criterion 7: Format Compliance
-- **Rule:** Each question has Related Feature + Buildup + Deep Dive + Evaluation Criteria
-- **How to check:** For each ### question, verify all 4 sub-fields exist:
-  - 연관 기능 (Related Feature)
-  - 빌드업 질문 (Buildup Question)
-  - 핵심 질문 (Deep Dive Question)
-  - 평가 기준 (Evaluation Criteria) with Hygiene/Core/Advanced levels
+- **Rule:** Each question has Related Feature + Buildup + Follow-up Chain + Evaluation Criteria
+- **How to check:** For each ### question, verify these sub-fields exist:
+  - `연관 기능 (Related Feature)`
+  - `빌드업 질문 (Buildup Question)` (= L1 Surface)
+  - `꼬리 질문 체인 (Follow-up Chain)` (replaces old `핵심 질문`)
+  - `평가 기준 (Evaluation Criteria)` with Hygiene/Core/Advanced levels
 - **Pass:** All questions have complete format
-- **Fail:** Any question missing a sub-field
+- **Fail:** Any question missing a sub-field or still using old `핵심 질문` format
 
 ### Criterion 9: Backoffice/Ops Efficiency Question (Conditional)
 - **Rule:** If a backoffice/admin tool project is selected for the interview, at least 1 question must probe operational efficiency planning
@@ -115,11 +115,29 @@ Check ALL of the following:
 - **Pass examples:** "내부 운영팀의 병목은?", "운영 효율화 성과를 어떻게 측정?", "백오피스 기획 시 내부 사용자 니즈를?"
 - **Fail examples:** Questions only about the admin UI design without probing operational impact
 
-### Criterion 8: Timing Feasibility
-- **Rule:** Total interview time approximately 30 minutes (28-35 min range)
-- **How to check:** Read the timing guide table, sum all durations
-- **Pass:** Total is 28-35 minutes
-- **Fail:** Total is < 28 or > 35 minutes
+### Criterion 8: Timing Guide
+- **Rule:** Timing guide table must exist (advisory, not a hard constraint)
+- **How to check:** Verify timing guide table is present in the document
+- **Pass:** Timing guide exists
+- **Fail:** No timing guide found
+
+### Criterion 10: Follow-up Chain Depth
+- **Rule:** Each question must have ≥3 layers in the follow-up chain (L1 buildup + L2 + L3 minimum)
+- **How to check:** For each question's `꼬리 질문 체인`, count the L-prefixed layers
+- **Pass:** Every question has L2 + L3 (L1 is the buildup question itself)
+- **Fail:** Any question has fewer than L2 + L3 in the chain
+
+### Criterion 11: Conditional Branches
+- **Rule:** Each follow-up chain must have at least 1 conditional branch
+- **How to check:** Look for "구체적 답변 시" / "모호한 답변 시" or equivalent branch patterns within chains
+- **Pass:** Every chain has ≥1 branch point
+- **Fail:** Any chain is purely linear without branching
+
+### Criterion 12: Trap Points
+- **Rule:** At least 1 trap point per project section
+- **How to check:** Search for `함정 포인트 (Trap Point)` fields within each project section
+- **Pass:** Each project section has ≥1 question with a trap point
+- **Fail:** Any project section has no trap points
 
 ## Output
 
@@ -143,8 +161,11 @@ Save to `{workspace_path}/quality_report.md`:
 | 5 | Stakeholder/Cross-functional | PASS/FAIL | Found in question X.Y / No stakeholder question found |
 | 6 | Project Grouping | PASS/FAIL | No orphan sections / Found orphan: [...] |
 | 7 | Format Compliance | PASS/FAIL | All complete / Missing in: [...] |
-| 8 | Timing Feasibility | PASS/FAIL | Total: N min (required: 28-35) |
+| 8 | Timing Guide | PASS/FAIL | Present / Missing |
 | 9 | Backoffice/Ops Efficiency | PASS/FAIL/N/A | Found ops question in X.Y / No backoffice project (N/A) / Backoffice project exists but no ops question |
+| 10 | Follow-up Chain Depth | PASS/FAIL | All ≥3 layers / Question X.Y has only N layers |
+| 11 | Conditional Branches | PASS/FAIL | All chains have branches / Question X.Y has no branches |
+| 12 | Trap Points | PASS/FAIL | All projects have ≥1 / Project X missing trap point |
 
 ## Overall: PASS / FAIL
 
@@ -179,7 +200,7 @@ If overall result is PASS:
 - Copy the draft content to `{workspace_path}/interview_questions_final.md`
 - Add "Quality Verified" stamp at the top:
   ```
-  > ✅ Quality Verified — All criteria passed (8 base + 4b hypothesis-verification + 4c problem-definition + 9 backoffice/ops). Generated by plan-interview pipeline.
+  > ✅ Quality Verified — All criteria passed (8 base + 4b hypothesis-verification + 4c problem-definition + 9 backoffice/ops + 10-12 pressure-probing). Generated by plan-interview pipeline.
   ```
 
 If overall result is FAIL:
