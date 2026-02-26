@@ -1,5 +1,5 @@
 ---
-description: "Performs deep-dive analysis on top 2-3 candidate projects: evaluates technical decisions and alternatives, validates metrics realism, assesses contribution boundaries, identifies risk areas and generates question seeds. Produces project_deep_dive.md artifact. Use dev-interview-guidelines skill."
+description: "Performs deep-dive analysis on top 2-3 candidate projects: evaluates technical decisions and alternatives, validates metrics realism, assesses contribution boundaries, identifies risk areas, detects contradictions, and generates pressure-chain question seeds. Produces project_deep_dive.md artifact. Use dev-interview-guidelines and interview-pressure-probing skills."
 model: opus
 ---
 
@@ -82,13 +82,30 @@ For each selected project, analyze across 5 dimensions:
 - Data consistency gaps
 - Operational blind spots (monitoring, alerting, incident response)
 
-#### 3.5 Question Seeds
+#### 3.5 Contradiction & Trap Point Analysis
+
+Analyze the candidate's claims for potential inconsistencies that can be used as trap points in follow-up chains (see `interview-pressure-probing` skill Section 3).
+
+| Claim | Potential Inconsistency | Trap Type | Suggested Trap Question |
+|-------|------------------------|-----------|------------------------|
+
+Check for these contradiction types:
+- **Scale Mismatch**: Project scope vs claimed metrics vs team size vs duration
+- **Timeline Conflict**: Short duration + large scope
+- **Depth Gap**: Claims deep expertise but only shows surface-level usage
+- **Contribution Inflation**: "전담" claims with team size > 1
+- **Metric Fabrication**: Precise numbers without measurement methodology
+- **Cross-Project Contradiction**: Inconsistent claims across different projects (e.g., "full-stack lead" in Project A but "backend only" in Project B with overlapping timelines)
+
+#### 3.6 Question Seeds
 
 Generate 4-6 question seeds per project, each with:
 - **Topic**: What aspect to probe
 - **Perspective**: Which of the 6 perspectives (Why, Trade-off, Business, How/Who, Verification, So What)
 - **Difficulty**: Hygiene / Core / Advanced
 - **Probe angle**: Specific question direction
+- **Pressure path**: Suggested L1→L2→L3 chain direction (see `interview-pressure-probing` skill Section 1)
+- **Trap point**: Which contradiction/inconsistency this seed can expose (from Section 3.5 analysis)
 
 ## Output
 
@@ -115,8 +132,11 @@ Save to `{workspace_path}/project_deep_dive.md`:
 ### Risk Areas
 (table from 3.4)
 
+### Contradiction & Trap Points
+(table from 3.5 — claim, inconsistency, trap type, trap question)
+
 ### Question Seeds
-(list from 3.5 — topic, perspective, difficulty, angle)
+(list from 3.6 — topic, perspective, difficulty, angle, pressure path, trap point)
 
 ## Project B: {name}
 (same structure)
@@ -141,3 +161,6 @@ Save to `{workspace_path}/project_deep_dive.md`:
 - Flag rather than assume when information is ambiguous
 - Risk areas should be realistic, not hypothetical edge cases
 - Each question seed must have a clear purpose — no filler
+- Each project MUST have at least 1 trap point identified in the Contradiction & Trap Points analysis
+- Pressure paths in question seeds should follow the 5-layer depth model from `interview-pressure-probing` skill
+- Cross-project contradictions are especially valuable — always check for timeline overlaps and inconsistent role claims

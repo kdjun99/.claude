@@ -63,20 +63,15 @@ Before generating questions, verify:
 
 ## 2. Question Design Rules
 
-### 2.1 Follow-Up Question Flow
+### 2.1 Follow-Up Chain Design (꼬리 질문 체인)
 
-All deep-dive questions MUST follow this 4-step flow:
+All deep-dive questions MUST be designed as **pressure funnels** using the `interview-pressure-probing` skill. Each question needs a multi-layer follow-up chain with conditional branches.
 
-```
-Judgment Basis → Alternatives → Risk → Results
-```
-
-| Step | Pattern | Example |
-|------|---------|---------|
-| 1. Judgment Basis | "Why did you choose X?" | "왜 그 방식을 선택했나요?" |
-| 2. Alternatives | "What else did you consider?" | "다른 대안은 검토했나요?" |
-| 3. Risk | "What could go wrong?" | "도입 후 발생한 부작용은 없었나요?" |
-| 4. Results | "How did you measure?" | "개선 효과를 어떻게 수치로 증명했나요?" |
+**Key rules (detail in `interview-pressure-probing` skill):**
+- Minimum depth: **3 layers** per question (L1→L2→L3). L4-L5 = interviewer discretion.
+- Must include **conditional branches** (concrete answer → go deeper / vague answer → redirect)
+- Must include **at least 1 trap point** per project section
+- The previous 4-step lateral flow (Judgment → Alternatives → Risk → Results) is now embedded as **probe patterns within each layer**, not as the primary structure. The PRIMARY structure is the **vertical depth chain (L1→L2→L3+)**.
 
 ### 2.2 Tech Choice Probing
 
@@ -148,16 +143,25 @@ For claims about security or data consistency:
 ```markdown
 ### [Symbolic Korean Title]
 - **연관 기능 (Related Feature):** [specific feature/achievement]
-- **빌드업 질문 (Buildup Question):** [easy entry point question]
-- **핵심 질문 (Deep Dive Question):**
-  - [probing question 1]
-  - [probing question 2]
-  - [probing question 3]
+- **빌드업 질문 (Buildup Question):** [= L1 Surface — easy entry point]
+- **꼬리 질문 체인 (Follow-up Chain):**
+  - **L2 (구체화):** [specifics probe]
+    - → 구체적 답변 시: [deeper follow-up]
+    - → 모호한 답변 시: [redirect to verifiable aspect]
+  - **L3 (교차검증):** [cross-check with other claims or logical implications]
+  - **L4 (깊이):** [edge case / internal mechanism — interviewer discretion]
+- **함정 포인트 (Trap Point):** [what inconsistency to watch for + how to probe it]
 - **평가 기준 (Evaluation Criteria):**
   - **[Hygiene Check]:** Pass — [OK signal] / Fail — [Red Flag signal]
   - **[Core Competency]:** Plus — [depth indicator] / Minus — [shallow indicator]
   - **[Advanced Insight]:** Plus — [senior insight] / Minus — [limited perspective]
 ```
+
+**Template Rules:**
+- `빌드업 질문` = L1 (deliberately easy, builds false comfort)
+- `꼬리 질문 체인` replaces the old `핵심 질문` — must have ≥3 layers with conditional branches
+- `함정 포인트` = pre-designed inconsistency detector (at least 1 per project section, can be shared across questions)
+- See `interview-pressure-probing` skill Section 6 for full format specification
 
 ### 3.4 Timing Guide Template
 
@@ -183,7 +187,10 @@ Every interview document MUST satisfy ALL of the following:
 | 4 | Quantitative metric question | At least 1 per document | Search for measurement/number/performance questions |
 | 5 | Collaboration question | At least 1 per document | Search for team/contribution/role boundary questions |
 | 6 | Project-based grouping | All questions in project sections | Verify no orphan "verification" or "additional" sections |
-| 7 | Timing feasibility | Total ~30 min | Sum timing guide, verify 28-35 min range |
+| 7 | Timing guide | Included (advisory) | Verify timing guide table exists (not a hard constraint) |
+| 8 | Follow-up chain depth | ≥3 layers per question | Each question has L1(빌드업) + L2 + L3 minimum in 꼬리 질문 체인 |
+| 9 | Conditional branches | ≥1 branch per chain | Check for "구체적 답변 시" / "모호한 답변 시" patterns |
+| 10 | Trap points | ≥1 per project section | Check 함정 포인트 field exists in at least 1 question per project |
 
 ### Failure Protocol
 

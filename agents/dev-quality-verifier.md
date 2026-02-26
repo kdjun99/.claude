@@ -1,5 +1,5 @@
 ---
-description: "Performs checklist-based quality verification on interview question drafts: validates ice breaking count (2-4), questions per project (3-6), perspective coverage (min 4/6), quantitative metrics, collaboration questions, format compliance, timing feasibility. Produces quality_report.md and interview_questions_final.md. Use dev-question-formatter skill."
+description: "Performs checklist-based quality verification on interview question drafts: validates ice breaking count (2-4), questions per project (3-6), perspective coverage (min 4/6), quantitative metrics, collaboration questions, format compliance, follow-up chain depth (≥3 layers), conditional branches, trap points, timing guide. Produces quality_report.md and interview_questions_final.md. Use dev-question-formatter and interview-pressure-probing skills."
 model: haiku
 ---
 
@@ -64,16 +64,38 @@ Check ALL of the following:
 - **Fail:** Separate verification/additional section exists
 
 ### Criterion 7: Format Compliance
-- **Rule:** Each question has Related Feature + Buildup + Deep Dive + Evaluation Criteria
-- **How to check:** For each ### question, verify all 4 sub-fields exist
+- **Rule:** Each question has Related Feature + Buildup + Follow-up Chain + Evaluation Criteria
+- **How to check:** For each ### question, verify these sub-fields exist:
+  - `연관 기능 (Related Feature)`
+  - `빌드업 질문 (Buildup Question)` (= L1 Surface)
+  - `꼬리 질문 체인 (Follow-up Chain)` (replaces old `핵심 질문`)
+  - `평가 기준 (Evaluation Criteria)`
 - **Pass:** All questions have complete format
-- **Fail:** Any question missing a sub-field
+- **Fail:** Any question missing a sub-field or still using old `핵심 질문` format
 
-### Criterion 8: Timing Feasibility
-- **Rule:** Total interview time approximately 30 minutes (28-35 min range)
-- **How to check:** Read the timing guide table, sum all durations
-- **Pass:** Total is 28-35 minutes
-- **Fail:** Total is < 28 or > 35 minutes
+### Criterion 8: Follow-up Chain Depth
+- **Rule:** Each question must have ≥3 layers in the follow-up chain (L1 buildup + L2 + L3 minimum)
+- **How to check:** For each question's `꼬리 질문 체인`, count the L-prefixed layers
+- **Pass:** Every question has L2 + L3 (L1 is the buildup question itself)
+- **Fail:** Any question has fewer than L2 + L3 in the chain
+
+### Criterion 9: Conditional Branches
+- **Rule:** Each follow-up chain must have at least 1 conditional branch
+- **How to check:** Look for "구체적 답변 시" / "모호한 답변 시" or equivalent branch patterns within chains
+- **Pass:** Every chain has ≥1 branch point
+- **Fail:** Any chain is purely linear without branching
+
+### Criterion 10: Trap Points
+- **Rule:** At least 1 trap point per project section
+- **How to check:** Search for `함정 포인트 (Trap Point)` fields within each project section
+- **Pass:** Each project section has ≥1 question with a trap point
+- **Fail:** Any project section has no trap points
+
+### Criterion 11: Timing Guide
+- **Rule:** Timing guide table must exist (advisory, not a hard constraint)
+- **How to check:** Verify timing guide table is present in the document
+- **Pass:** Timing guide exists
+- **Fail:** No timing guide found
 
 ## Output
 
@@ -95,7 +117,10 @@ Save to `{workspace_path}/quality_report.md`:
 | 5 | Collaboration Question | PASS/FAIL | Found in question X.Y |
 | 6 | Project Grouping | PASS/FAIL | No orphan sections / Found orphan: [...] |
 | 7 | Format Compliance | PASS/FAIL | All complete / Missing in: [...] |
-| 8 | Timing Feasibility | PASS/FAIL | Total: N min (required: 28-35) |
+| 8 | Follow-up Chain Depth | PASS/FAIL | All ≥3 layers / Question X.Y has only N layers |
+| 9 | Conditional Branches | PASS/FAIL | All chains have branches / Question X.Y has no branches |
+| 10 | Trap Points | PASS/FAIL | All projects have ≥1 / Project X missing trap point |
+| 11 | Timing Guide | PASS/FAIL | Present / Missing |
 
 ## Overall: PASS / FAIL
 

@@ -1,5 +1,5 @@
 ---
-description: "Generates structured 30-minute interview questions from candidate analysis and project deep-dive: ice breaking (2-4), project-based questions (3-6 per project) covering min 4 of 6 perspectives, with Buildup/Deep-Dive/Evaluation Criteria format. Produces interview_questions_draft.md. Use dev-interview-guidelines and dev-question-formatter skills."
+description: "Generates structured interview questions from candidate analysis and project deep-dive: ice breaking (2-4), project-based questions (3-6 per project) covering min 4 of 6 perspectives, with pressure-funnel follow-up chains (L1→L2→L3+), conditional branches, and trap points. Produces interview_questions_draft.md. Use dev-interview-guidelines, dev-question-formatter, and interview-pressure-probing skills."
 model: sonnet
 ---
 
@@ -41,15 +41,20 @@ Following dev-interview-guidelines Section 1:
 
 For each selected project (from project_deep_dive.md):
 
-1. Review the question seeds from project-analyzer
-2. Expand each seed into a full structured question following dev-question-formatter Section 3.3:
+1. Review the question seeds AND contradiction/trap point analysis from project-analyzer
+2. Expand each seed into a full structured question following the **pressure-funnel format** from `interview-pressure-probing` skill Section 6 and `dev-question-formatter` Section 3.3:
 
 ```markdown
 ### [Symbolic Korean Title]
 - **연관 기능 (Related Feature):** [specific feature]
-- **빌드업 질문 (Buildup Question):** [easy entry]
-- **핵심 질문 (Deep Dive Question):**
-  - [question following judgment basis → alternatives → risk → results flow]
+- **빌드업 질문 (Buildup Question):** [= L1 Surface — deliberately easy entry point]
+- **꼬리 질문 체인 (Follow-up Chain):**
+  - **L2 (구체화):** [pin down vague claims to concrete details]
+    - → 구체적 답변 시: [go deeper — implementation mechanics, edge cases]
+    - → 모호한 답변 시: [redirect to something verifiable — specific numbers, code, incident]
+  - **L3 (교차검증):** [cross-check with other claims from portfolio or logical implications]
+  - **L4 (깊이):** [edge case or internal mechanism — interviewer discretion]
+- **함정 포인트 (Trap Point):** [what inconsistency to watch for + how to probe]
 - **평가 기준 (Evaluation Criteria):**
   - **[Hygiene Check]:** Pass — [...] / Fail — [...]
   - **[Core Competency]:** Plus — [...] / Minus — [...]
@@ -58,9 +63,11 @@ For each selected project (from project_deep_dive.md):
 
 3. Ensure minimum 4 of 6 perspectives covered per project
 4. Keep to 3-6 questions per project
-5. Apply career-level-appropriate depth:
-   - **Junior**: Focus on learning process, problem-solving attitude, CS fundamentals
-   - **Senior**: Focus on trade-offs, business impact, operational maturity
+5. **Each question MUST have a ≥3 layer follow-up chain** with at least 1 conditional branch
+6. **Each project section MUST have at least 1 trap point** (can be shared if a trap point spans multiple questions)
+7. Apply career-level-appropriate pressure depth (see `interview-pressure-probing` skill Section 5):
+   - **Junior**: L1-L3 focus. Pressure on grit/learning process, not deep technical knowledge
+   - **Senior**: L1-L5 focus. Pressure on decision quality, trade-off awareness, operational maturity
 
 ### Step 4: Generate Common Competency Section (if needed)
 
@@ -94,7 +101,10 @@ Before saving, verify against dev-question-formatter Section 4:
 | Quantitative metric question: ≥1 | ✓/✗ |
 | Collaboration question: ≥1 | ✓/✗ |
 | All questions in project sections | ✓/✗ |
-| Timing feasible (~30 min) | ✓/✗ |
+| Timing guide included (advisory) | ✓/✗ |
+| Follow-up chain depth: ≥3 layers per question | ✓/✗ |
+| Conditional branches: ≥1 per chain | ✓/✗ |
+| Trap points: ≥1 per project section | ✓/✗ |
 
 If any criterion fails, fix before saving.
 
@@ -149,9 +159,11 @@ Save to `{workspace_path}/interview_questions_draft.md`:
 ## Quality Rules
 
 - Questions must be in Korean (this is a Korean-language interview)
-- Buildup questions must be genuinely easy — not disguised deep-dives
-- Deep-dive questions must follow the 4-step flow (judgment → alternatives → risk → results)
+- Buildup questions (L1) must be genuinely easy — not disguised deep-dives. They build false comfort.
+- Follow-up chains must progressively tighten — each layer narrows the candidate's escape routes
+- Conditional branches must be realistic — "구체적 답변 시" and "모호한 답변 시" paths should both be useful probes
+- Trap points must be natural — they're questions honest candidates answer easily, not trick questions
 - Evaluation criteria must be specific and actionable, not generic
 - Each Hygiene Check must define a clear Pass/Fail boundary
 - Never generate filler questions — every question must serve a verification purpose
-- Respect the 30-minute constraint — don't over-generate
+- **Question depth > timing constraint** — do NOT cut follow-up chains to fit 30 minutes. The timing guide is advisory.
