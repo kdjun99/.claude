@@ -1,7 +1,9 @@
 ---
-description: "Decompose analyzed spec into foundation + domain feature-requests with dependency graph. Third step of the spec-decomposition pipeline (after analyze and translate)."
+description: "[DEPRECATED] Use /spec:plan instead. Decompose spec into feature-requests."
 allowed-tools: Read, Write, Glob, Grep, Task
 ---
+
+> **DEPRECATED**: This command has been replaced by `/spec:plan` which combines spec-analyze, spec-translate, spec-decompose, and spec-confirm into a single unified pipeline.
 
 # /spec-decompose {spec-id}
 

@@ -1,5 +1,5 @@
 ---
-description: "Spec decomposition expert — reads _spec-analysis.md, generates foundation + domain feature-requests per repo with dependency graph and execution waves. Produces feature-requests/ directory and _requirements.md. Uses project repo-structure skill and spec-decomposition-patterns."
+description: "[DEPRECATED] Used by old spec-decompose command. Replaced by /spec:plan pipeline."
 model: sonnet
 tools: Read, Write, Edit, Grep, Glob
 skills: spec-decomposition-patterns, subagent-output-optimization

@@ -1,7 +1,9 @@
 ---
-description: "Apply team discussion feedback and finalize feature-requests. Third step of the spec-decomposition pipeline."
+description: "[DEPRECATED] Use /spec:plan instead. Finalize feature-requests."
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
+
+> **DEPRECATED**: This command has been replaced by `/spec:plan` which combines spec-analyze, spec-translate, spec-decompose, and spec-confirm into a single unified pipeline.
 
 # /spec-confirm {spec-id}
 

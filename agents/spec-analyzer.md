@@ -1,5 +1,5 @@
 ---
-description: "PDF spec analysis expert — reads PDF design specs, extracts checklist items, groups features by domain, maps to project repos using repo-structure skill. Produces _spec-analysis.md artifact."
+description: "[DEPRECATED] Used by old spec-analyze command. Replaced by /spec:plan pipeline."
 model: sonnet
 tools: Read, Write, Grep, Glob
 skills: subagent-output-optimization

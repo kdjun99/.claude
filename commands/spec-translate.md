@@ -1,7 +1,9 @@
 ---
-description: "Validate developer-filled domain mapping — checks completeness, cross-references with spec analysis. Second step of the spec-decomposition pipeline."
+description: "[DEPRECATED] Use /spec:plan instead. Validate developer-filled domain mapping."
 allowed-tools: Read, Write, Glob, Grep
 ---
+
+> **DEPRECATED**: This command has been replaced by `/spec:plan` which combines spec-analyze, spec-translate, spec-decompose, and spec-confirm into a single unified pipeline.
 
 # /spec-translate {spec-id}
 

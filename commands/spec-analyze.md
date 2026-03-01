@@ -1,7 +1,9 @@
 ---
-description: "Analyze a PDF design spec (기획서) — extract checklist, group features, map to repos. First step of the spec-decomposition pipeline."
+description: "[DEPRECATED] Use /spec:plan instead. Analyze a PDF design spec."
 allowed-tools: Read, Write, Glob, Grep, Task
 ---
+
+> **DEPRECATED**: This command has been replaced by `/spec:plan` which combines spec-analyze, spec-translate, spec-decompose, and spec-confirm into a single unified pipeline.
 
 # /spec-analyze {spec-id} --pdf {path} --project {project}
 
