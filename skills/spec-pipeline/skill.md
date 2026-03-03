@@ -47,9 +47,11 @@ PDF Spec
 ## PDF Reading Constraints
 
 **CRITICAL**: Refer to `spec-analysis` skill "PDF Reading Constraints" section.
-- NEVER read multiple PDFs in parallel (API image size limit)
+- NEVER read PDFs in the orchestrator context (images accumulate → API Error 400)
+- ALWAYS delegate PDF reading to subagents (each gets isolated context)
+- One PDF per subagent (can run in parallel safely)
 - Use `pages` parameter for large PDFs (max 20 pages per request)
-- Multi-version specs (APP/CMS/MO/PC): read sequentially, largest first
+- Multi-version specs (APP/CMS/MO/PC): one subagent per version, merge text outputs
 
 ## Phase 1: Analysis (spec-analysis skill)
 
