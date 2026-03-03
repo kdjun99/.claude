@@ -44,6 +44,13 @@ PDF Spec
 - (Optional) `domain-dictionary.md`
 - (Optional) `{project}-repo-structure/skill.md`
 
+## PDF Reading Constraints
+
+**CRITICAL**: Refer to `spec-analysis` skill "PDF Reading Constraints" section.
+- NEVER read multiple PDFs in parallel (API image size limit)
+- Use `pages` parameter for large PDFs (max 20 pages per request)
+- Multi-version specs (APP/CMS/MO/PC): read sequentially, largest first
+
 ## Phase 1: Analysis (spec-analysis skill)
 
 Refer to `spec-analysis` skill for full rules.

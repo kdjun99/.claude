@@ -20,6 +20,39 @@ Rules and patterns for analyzing PDF design specs into structured artifacts.
 - (Optional) `{project-root}/.claude/skills/coding-guide/skill.md`
 - (Optional) `{project-root}/.claude/skills/domain-dictionary.md`
 
+## PDF Reading Constraints
+
+Claude API has image size limits that affect PDF reading. Follow these rules strictly:
+
+### Rule 1: NEVER read multiple PDFs in parallel
+```
+BAD:  Read(file1.pdf) + Read(file2.pdf) + Read(file3.pdf)  ← API Error 400
+GOOD: Read(file1.pdf) → Read(file2.pdf) → Read(file3.pdf)  ← Sequential
+```
+
+When multiple PDFs exist (e.g., APP/CMS/MO/PC versions), read ONE AT A TIME.
+
+### Rule 2: Use `pages` parameter for large PDFs
+```
+BAD:  Read(large.pdf)                    ← Fails for PDFs > 10 pages
+GOOD: Read(large.pdf, pages="1-10")      ← Read in chunks of 10-20 pages
+      Read(large.pdf, pages="11-20")
+```
+
+Max 20 pages per request. For PDFs with unknown page count, start with `pages="1-10"`.
+
+### Rule 3: Multi-version spec strategy
+When spec has multiple platform versions (APP, CMS, MO, PC):
+1. Read the **largest or most comprehensive version first** (usually PC or CMS)
+2. Then read other versions for **diff-only** (unique screens, platform-specific rules)
+3. Do NOT read all versions fully if they share 80%+ content
+
+### Rule 4: Image-heavy PDFs
+If a PDF has many screenshots/mockups:
+- Use `pages` to read in small batches (5-10 pages)
+- Extract text content first, reference images by page number
+- For image analysis, read specific pages individually
+
 ## Workspace Setup
 
 ```
