@@ -29,51 +29,60 @@ Rules and patterns for analyzing PDF design specs into structured artifacts.
 └── _codebase-scan.md       ← output (from explore agent)
 ```
 
+## PDF Execution Model
+
+**CRITICAL**: The orchestrator must NEVER read PDF files directly.
+PDF images accumulate in the orchestrator context and trigger API Error 400 (image dimension limit for many-image requests).
+
+**Execution rule**: ALL PDF reading happens inside subagents. Each subagent gets an isolated context — images don't leak back to the orchestrator. The orchestrator only reads the TEXT output files that subagents produce.
+
+**Multi-PDF strategy**: When multiple PDFs exist (APP/CMS/MO/PC), spawn one subagent PER PDF in parallel. Each subagent saves results to a separate text file. The orchestrator merges the text outputs.
+
 ## Phase 1A: PDF Analysis (analyst, opus)
 
-Delegate to `oh-my-claudecode:analyst` (opus) with these extraction rules:
+Spawn `oh-my-claudecode:analyst` (opus) with the prompt template below.
+**DO NOT read the PDF yourself** — pass the path to the subagent.
 
-### Cover Page
-Extract: title, version, date, author
+For multiple PDFs, spawn one analyst per PDF in parallel:
 
-### Checklist Extraction (체크리스트)
-Look for columns: No, 기능/기능명, 반영여부, 비고
+```
+Task(subagent_type="oh-my-claudecode:analyst", model="opus", prompt="""
+Read the PDF at {pdf-path} (use pages parameter for large PDFs, max 20 pages per request).
+Extract the following and save ALL results to {workspace}/_spec-analysis-raw.md:
 
-| Marker | Status |
-|--------|--------|
-| O, 반영, ✓ | Included |
-| X, 미반영, ✗ | Excluded |
-| Ambiguous | Uncertain (flag for human review) |
+1. COVER PAGE: title, version, date, author
 
-### Detailed Spec Extraction
-For each included item:
-- Screen/UI descriptions
-- Field definitions with types and validation rules
-- Business rules and state transitions
-- Access control requirements
-- Page references for traceability
+2. CHECKLIST (체크리스트):
+   Look for columns: No, 기능/기능명, 반영여부, 비고
+   Classify each item:
+   - O, 반영, ✓ → Included
+   - X, 미반영, ✗ → Excluded
+   - Ambiguous → Uncertain (flag for human review)
 
-### Feature Grouping Rules (priority order)
-1. **Same entity/model** — features on same data entity
-2. **Same user flow** — sequential steps in user journey
-3. **Same domain** — same business domain
-4. **Explicit spec grouping** — respect spec's own section dividers
+3. DETAILED SPECS (for each Included item):
+   - Screen/UI descriptions
+   - Field definitions with types and validation rules
+   - Business rules and state transitions
+   - Access control requirements
+   - Page references for traceability
 
-Target: 2-6 items per group. Single-item groups OK if truly independent.
+4. FEATURE GROUPS (priority order for grouping):
+   a. Same entity/model — features on same data entity
+   b. Same user flow — sequential steps in user journey
+   c. Same domain — same business domain
+   d. Explicit spec grouping — respect spec's own section dividers
+   Target: 2-6 items per group. Single-item groups OK if truly independent.
 
-### Domain Term Extraction
-Extract business-specific Korean terms EXACTLY as written:
-- Business entities: 공고, 지원자, 스크랩, Q&A
-- Business metrics: 조회수, 관심, 전일 대비 증감
-- Business states: 진행, 마감, 평가진행중, 최종합격, 불합격
-- Business actions: 공고 마감, 숨기기, 간편지원
-- Business concepts: 채용 현황, 공고 성과, 관심유저
+5. DOMAIN TERMS:
+   Extract business-specific Korean terms EXACTLY as written in the spec.
+   Categories: entities, metrics, states, actions, concepts.
+   Rules: exact spec wording (no translation), brief description each, deduplicate, group by feature group.
 
-Rules:
-- Use EXACT spec wording (do NOT translate or guess code names)
-- Include brief description for each
-- Deduplicate across groups
-- Group by feature group for traceability
+Output format: structured markdown with clear sections for each of the 5 areas above.
+""")
+```
+
+After subagent completes, the orchestrator reads `_spec-analysis-raw.md` (text only) and proceeds to Phase 1B/1C.
 
 ## Phase 1B: Codebase Scan (explore, haiku)
 

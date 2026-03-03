@@ -44,15 +44,24 @@ PDF Spec
 - (Optional) `domain-dictionary.md`
 - (Optional) `{project}-repo-structure/skill.md`
 
+## PDF Execution Model
+
+**CRITICAL**: The orchestrator must NEVER read PDF files directly.
+Refer to `spec-analysis` skill "PDF Execution Model" section for full rationale.
+
+- ALL PDF reading is delegated to subagents (isolated context, no image leakage)
+- One subagent per PDF file (parallel for multi-version specs)
+- Orchestrator only reads TEXT output files from subagents
+
 ## Phase 1: Analysis (spec-analysis skill)
 
-Refer to `spec-analysis` skill for full rules.
+Refer to `spec-analysis` skill for full rules and subagent prompt templates.
 
-**Parallel execution:**
-1. `oh-my-claudecode:analyst` (opus) — PDF analysis
-2. `oh-my-claudecode:explore` (haiku) — codebase scan
+**Parallel execution (orchestrator spawns, does NOT read PDFs):**
+1. `oh-my-claudecode:analyst` (opus) — reads PDF in isolated context, saves text results
+2. `oh-my-claudecode:explore` (haiku) — codebase scan (no PDF involved)
 
-**Then:** 3-tier domain mapping auto-proposal
+**Then:** Orchestrator reads text outputs → 3-tier domain mapping auto-proposal
 
 **Outputs:**
 - `_spec-analysis.md` — checklist, feature groups, domain terms
