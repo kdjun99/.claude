@@ -1,6 +1,6 @@
 ---
 name: codebase-learn
-description: "Scans a codebase and auto-updates repo-structure skill and domain-dictionary with discovered patterns. Use with ralph for persistent execution."
+description: "Scans a codebase and auto-updates repo-structure skill, domain-dictionary, and project-memory with discovered patterns. Use with ralph for persistent execution. See context-layer-protocol for Layer 1 integration."
 ---
 
 # Codebase Learn
@@ -168,9 +168,95 @@ Output format:
 4. Check test utilities: supertest, @nestjs/testing
 ```
 
+### Step 8: Persist to project-memory (Layer 1)
+
+After Steps 1-7, write stable facts to project-memory for cross-session reuse.
+See `context-layer-protocol` skill for full Layer 1 specification.
+
+**Write structured data:**
+
+```
+project_memory_write({
+  techStack: {
+    languages: ["{from Step 1}"],
+    frameworks: ["{from Step 1 — e.g., NestJS, Prisma, Apollo GraphQL}"],
+    packageManager: "{npm|yarn|pnpm}",
+    runtime: "{from package.json engines}"
+  },
+  build: {
+    buildCommand: "{from Step 3}",
+    testCommand: "{from Step 3}",
+    lintCommand: "{from Step 3}",
+    devCommand: "{from Step 3}",
+    typeCheckCommand: "{from Step 3, if found}",
+    gqlCodegenCommand: "{from Step 3, if found}"
+  },
+  conventions: {
+    namingStyle: "{from Step 2 observation}",
+    importStyle: "{from Step 5 observation}",
+    testPattern: "{from Step 7 — co-located/separate/both}",
+    testFramework: "{from Step 7 — jest/vitest/mocha}",
+    fileOrganization: "{from Step 2 — module pattern summary}",
+    apiType: "{from Step 5 — GraphQL code-first/schema-first/REST}",
+    authPattern: "{from Step 5 — JWT/session/API key}",
+    validationLibrary: "{from Step 5 — class-validator/zod/joi}"
+  },
+  structure: {
+    isMonorepo: false,
+    mainDirectories: ["{from Step 2 — list of src/ subdirectories}"],
+    modulePatterns: {
+      domain: "{from Step 2}",
+      infrastructure: "{from Step 2}",
+      shared: "{from Step 2}"
+    },
+    prismaSchemaType: "{from Step 4 — single/multi/dual}",
+    prismaVersion: "{from Step 4}"
+  }
+})
+```
+
+**Write domain entity notes (with deduplication):**
+
+For each discovered domain entity from Step 6, persist using `project_memory_add_note`:
+
+```
+project_memory_add_note(
+  category: "Domain",
+  content: "{ModelName} -> table:{table_name}, graphql:{TypeName}, module:{module_path}"
+)
+```
+
+#### Domain Entity Deduplication Strategy
+
+Before adding domain notes, prevent duplicates:
+
+1. Read existing notes: `project_memory_read(sections: "notes")`
+2. For each discovered entity `{ModelName}`:
+   a. Search existing notes for content prefix match `"{ModelName} ->"` in category "Domain"
+   b. If found AND content changed → delete old note, add updated one
+   c. If found AND content unchanged → skip (no duplicate)
+   d. If not found → add new note
+3. Note: `customNotes` array has a cap of 20 entries across all categories. If approaching the limit, prioritize entities referenced in the current spec's feature groups.
+
+#### Precedence with domain-dictionary.md
+
+- `domain-dictionary.md` is the authoritative source (human-verified Tier 1 mappings)
+- `project-memory` domain notes are supplementary (machine-discovered, unverified)
+- On conflict (same entity, different mapping): `domain-dictionary.md` takes precedence
+- project-memory notes serve as a discovery feed: entities found here but absent from `domain-dictionary.md` are candidates for human verification and promotion to Tier 1
+
+**Add lastScanned timestamp:**
+
+```
+project_memory_add_note(
+  category: "Scan",
+  content: "lastScanned:{repo-name} -> {ISO date}"
+)
+```
+
 ## Update Protocol
 
-After scanning, update target files:
+After scanning, update target files (Steps 8 outputs + static files below):
 
 ### Update repo-structure skill
 
@@ -228,7 +314,8 @@ When scanning multiple repos at once:
 After learning completes:
 1. Updated `{repo-structure}/skill.md` with new sections
 2. Updated or created `domain-dictionary.md`
-3. Learning report summarizing what was discovered and updated
+3. Updated project-memory with techStack, build, conventions, structure, and domain entity notes (Layer 1)
+4. Learning report summarizing what was discovered and updated
 
 ```markdown
 # Codebase Learning Report
@@ -243,11 +330,19 @@ After learning completes:
 - Prisma Models: {n}
 - GraphQL Types: {n}
 - Build Scripts: {n}
-- Domain Terms: {n} new, {m} existing
+- Domain Terms: {n} new, {m} existing, {k} updated in project-memory
 
 ## Updated Files
 - {repo-structure-path}: {sections updated}
 - {domain-dictionary-path}: {terms added}
+
+## Updated project-memory (Layer 1)
+- techStack: {written/skipped}
+- build: {written/skipped}
+- conventions: {written/skipped}
+- structure: {written/skipped}
+- Domain notes: {n} added, {m} updated, {k} skipped (unchanged)
+- lastScanned: {ISO date}
 ```
 
 ## Quality Criteria
@@ -259,4 +354,7 @@ After learning completes:
 - [ ] Domain terms extracted with code entity mappings
 - [ ] repo-structure skill updated with Verified markers
 - [ ] domain-dictionary updated (new terms only, no overwrites)
-- [ ] Learning report generated
+- [ ] project-memory written with techStack, build, conventions, structure
+- [ ] Domain entity notes deduplicated (no duplicates on re-scan)
+- [ ] lastScanned timestamp written to project-memory
+- [ ] Learning report generated (includes project-memory update summary)

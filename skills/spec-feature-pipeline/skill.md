@@ -1,6 +1,6 @@
 ---
 name: spec-feature-pipeline
-description: "Overall pipeline orchestration: spec analysis → domain mapping → decomposition → design plans → implementation → PR. Defines artifact flow, human checkpoints, workspace structure, and how to combine with ralph for end-to-end execution."
+description: "Overall pipeline orchestration: context bootstrap (Layer 1+2) → spec analysis → domain mapping → decomposition → design plans → implementation → PR. Defines artifact flow, human checkpoints, workspace structure, context layer integration, and how to combine with ralph for end-to-end execution. See context-layer-protocol."
 ---
 
 # Spec-Feature Pipeline
@@ -18,19 +18,27 @@ End-to-end pipeline from PDF design spec to implemented PRs.
 ```
 PDF Spec
   │
+  ├─[Phase 0: Context Bootstrap]──→ $CACHED_CONTEXT + $ARCHITECTURE_CONTEXT
+  │   Skills: context-layer-protocol
+  │   Tools: project_memory_read (Layer 1), DeepWiki stub (Layer 2 DEFERRED)
+  │   No human checkpoint — automatic
+  │
   ├─[Phase 1: Analysis]──→ _spec-analysis.md + _domain-mapping.md
   │   Skills: spec-analysis
   │   Agents: analyst(opus) + explore(haiku)
+  │   Context: $CACHED_CONTEXT passed to explore agent
   │   H1: Review checklist, groups, domain mapping
   │
   ├─[Phase 2: Decomposition]──→ feature-requests + _requirements.md
   │   Skills: spec-decomposition-patterns
   │   Agents: architect(opus)
+  │   Context: project-memory for per-repo sizing adjustment
   │   H2: Review sizing, dependencies, waves
   │
   ├─[Phase 3: Design Plans]──→ design-plan.md per FR
   │   Skills: spec-design
   │   Agents: explore(haiku) + analyst(opus) per FR
+  │   Context: Layer 3 (AST grep) for explore, Layer 4 ($IMPLEMENTATION_PATTERNS) for analyst
   │   H3: Review design plans
   │
   └─[Phase 4: Implementation]──→ PRs per FR (wave-ordered)
@@ -68,18 +76,23 @@ User: "ralph feature-implementation 스킬로 이거 구현해줘" + design-plan
 ## Artifact Flow
 
 ```
+Phase 0 outputs (ephemeral — not saved to files):
+  $CACHED_CONTEXT ─────────────→ Phase 1, Phase 2 (in-memory, max 2000 tokens)
+  $ARCHITECTURE_CONTEXT ───────→ Phase 1 (DEFERRED — stub: empty)
+
 Phase 1 outputs:
   _spec-analysis.md ──────────→ Phase 2 input
-  _domain-mapping.md ─────────→ Phase 2 input
+  _domain-mapping.md ─────────→ Phase 2 input, Phase 3 reference
   _codebase-scan.md ──────────→ Phase 2 reference
 
 Phase 2 outputs:
   features/{fr-id}/_feature-request.md ──→ Phase 3 input
   _requirements.md ───────────────────→ Phase 3 wave ordering
 
-Phase 3 outputs:
+Phase 3 outputs (per FR — uses Layer 3 + Layer 4 context):
   features/{fr-id}/design-plan.md ────→ Phase 4 input
   features/{fr-id}/_explore-report.md → Phase 4 reference
+  $IMPLEMENTATION_PATTERNS ───────────→ analyst only (ephemeral, max 1000 tokens)
 
 Phase 4 outputs:
   _implementation-report.md
@@ -168,12 +181,26 @@ After H2 approval, generate:
 
 ```
 spec-feature-pipeline (orchestration)
-├── spec-analysis (Phase 1)
-├── spec-decomposition-patterns (Phase 2, existing)
-├── spec-design (Phase 3)
+├── context-layer-protocol (Phase 0 — shared protocol for all layers)
+├── spec-analysis (Phase 1 — uses Layer 1 + Layer 2 stub)
+├── spec-decomposition-patterns (Phase 2 — uses Layer 1 for per-repo adjustment)
+├── spec-design (Phase 3 — uses Layer 3 AST-primary + Layer 4 precision)
 ├── feature-implementation (Phase 4)
-└── linkareer-repo-structure (project-specific, optional)
+├── codebase-learn (prerequisite — populates Layer 1 project-memory)
+└── linkareer-repo-structure (project-specific, optional — Layer 1 fallback)
 ```
+
+## Tool Availability Matrix
+
+See `context-layer-protocol` for the full matrix. Summary for pipeline phases:
+
+| Phase | Layer 1 (project-memory) | Layer 2 (DeepWiki) | Layer 3 (AST grep) | Layer 4 (AST + Read) |
+|-------|-------------------------|-------------------|-------------------|---------------------|
+| Phase 0 | Required | Stub (DEFERRED) | - | - |
+| Phase 1 | $CACHED_CONTEXT | - | explore agent | - |
+| Phase 2 | Per-repo sizing | - | - | - |
+| Phase 3 | - | - | explore + ast_grep | analyst + ast_grep |
+| Phase 4 | - | - | - | - |
 
 ## Project-Specific Extensions
 
@@ -196,7 +223,8 @@ If `{project-root}/.claude/skills/{project}-repo-structure/skill.md` exists:
 
 | Phase | Gate | Evidence |
 |-------|------|----------|
-| Analysis | All items classified, groups formed | _spec-analysis.md complete |
-| Decomposition | All FRs pass sizing, no circular deps | _requirements.md sizing table |
-| Design | All 5 sections present per plan | design-plan.md files |
+| Bootstrap | Layer 1 loaded (or fallback noted) | $CACHED_CONTEXT populated or "full scan" logged |
+| Analysis | All items classified, groups formed, 3-tier mapping applied | _spec-analysis.md + _domain-mapping.md complete |
+| Decomposition | All FRs pass sizing, no circular deps, domain mapping cross-checked | _requirements.md sizing table |
+| Design | All 6 sections present per plan (incl. Reference Implementation) | design-plan.md files |
 | Implementation | Build + tests pass, reviews clean | verify commands output |

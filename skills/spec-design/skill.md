@@ -1,6 +1,6 @@
 ---
 name: spec-design
-description: "Rules for generating design plans from feature-requests. Covers codebase exploration, requirements analysis, and the 5-section design-plan.md format. Use with ralph for persistent execution."
+description: "Rules for generating design plans from feature-requests. Covers codebase exploration (Layer 3 AST-primary), requirements analysis (Layer 4 precision), and the 6-section design-plan.md format. See context-layer-protocol. Use with ralph for persistent execution."
 ---
 
 # Spec Design (Design Plan Generation)
@@ -21,24 +21,76 @@ Rules for generating design-plan.md files from feature-requests.
 
 ## Workflow Per Feature-Request
 
-### Step A: Codebase Exploration (explore, haiku)
+### Step A: Codebase Exploration (explore, haiku) — ENHANCED
+
+See `context-layer-protocol` Layer 3 for full specification.
 
 Delegate to `oh-my-claudecode:explore` (haiku):
 
-Tasks:
+Tasks (existing):
 1. Find existing modules, services, resolvers related to FR's entities
 2. Find existing DB models/tables referenced in Technical Details
 3. Find existing GraphQL types referenced
 4. Identify integration points with existing code
 5. Note patterns in related modules
 
+Tasks (NEW — Layer 3, AST grep PRIMARY):
+6. For each found service/resolver, use `ast_grep_search` to extract:
+   - Public method signatures and constructor dependencies:
+     `ast_grep_search("@Injectable() class $SERVICE { constructor($DEPS) { $$$BODY } }")`
+   - Decorator usage patterns:
+     `ast_grep_search("@UseGuards($GUARD) $METHOD")`
+     `ast_grep_search("@Roles($ROLE) $METHOD")`
+7. For resolvers, extract query/mutation signatures:
+   `ast_grep_search("@Query(() => $TYPE) async $NAME($ARGS) { $$$BODY }")`
+   `ast_grep_search("@Mutation(() => $TYPE) async $NAME($ARGS) { $$$BODY }")`
+8. For key types, extract type/interface definitions:
+   `ast_grep_search("@ObjectType() class $TYPE { $$$FIELDS }")`
+   `ast_grep_search("@InputType() class $TYPE { $$$FIELDS }")`
+
+#### Future Enhancement: LSP Tools (when explore-high agent is available)
+
+When an `explore-high` agent is created with `lsp_find_references`, `lsp_goto_definition`,
+and `lsp_hover` capabilities, tasks 6-8 can be upgraded to use LSP for more precise results:
+- `lsp_document_symbols`: full type information for method signatures
+- `lsp_find_references`: caller graph and dependency direction mapping
+- `lsp_hover`: complete type definitions for complex GraphQL types
+Until then, AST grep provides sufficient structural pattern matching for Layer 3.
+
 Save to: `{workspace}/features/{fr-id}/_explore-report.md`
 
-### Step B: Requirements Analysis (analyst, opus)
+### Step B: Requirements Analysis (analyst, opus) — ENHANCED
 
-Delegate to `oh-my-claudecode:analyst` (opus):
+See `context-layer-protocol` Layer 4 for full specification.
 
-Tasks:
+**Pre-analysis scan (Layer 4 — AST grep precision):**
+
+Before delegating to analyst, gather implementation pattern data:
+
+1. Find similar existing implementations to use as reference:
+   `ast_grep_search("@Resolver(() => $TYPE) class $NAME { }")`
+   → Identifies resolver patterns to follow
+
+2. Find test patterns in the same module:
+   `ast_grep_search("describe('$SERVICE', () => { })")`
+   → Identifies test conventions to replicate
+
+3. Find error handling patterns:
+   `ast_grep_search("throw new $EXCEPTION($MSG)")`
+   → Identifies exception types used in similar modules
+
+4. Find validation patterns:
+   `ast_grep_search("@IsNotEmpty() $FIELD: $TYPE")`
+   → Identifies class-validator decorators used
+
+Apply Context Budget: filter to max 1000 tokens, keep top 3-5 most relevant
+patterns from the same module as the target FR's entities.
+Pass as `$IMPLEMENTATION_PATTERNS` to analyst.
+Note: `$IMPLEMENTATION_PATTERNS` is passed ONLY to analyst (opus), never to explore (haiku).
+
+**Delegate to `oh-my-claudecode:analyst` (opus):**
+
+Tasks (existing):
 1. Break down into concrete implementation requirements
 2. Identify DB schema changes (tables, columns, relations, indexes)
 3. Identify API schema changes (queries, mutations, types, inputs)
@@ -47,11 +99,17 @@ Tasks:
 6. Define acceptance criteria
 7. Estimate file scope
 
+Tasks (NEW — Layer 4 enhanced):
+8. Reference `$IMPLEMENTATION_PATTERNS` to ensure design-plan recommendations
+   match the project's actual coding patterns (not generic NestJS patterns)
+9. Include "Reference Implementation" section in analysis — point to
+   1-2 existing similar features as implementation guides
+
 Return analysis directly (do NOT save to file).
 
 ### Step C: Write design-plan.md
 
-## Design Plan Template (5-Section Format)
+## Design Plan Template (6-Section Format)
 
 ```markdown
 # Design Plan: {fr-id}
@@ -125,6 +183,19 @@ Return analysis directly (do NOT save to file).
 
 ---
 
+## 6. Reference Implementation
+
+### Similar Existing Feature
+- **Module**: {module path}
+- **Why Similar**: {brief explanation}
+
+### Patterns to Follow
+| Pattern | Source | Example |
+|---------|--------|---------|
+| {pattern name} | {source file path} | {brief code reference} |
+
+---
+
 ## Implementation Files (Estimated)
 | # | File | Action | Description |
 
@@ -146,10 +217,11 @@ When processing multiple FRs from a spec decomposition:
 
 ## Quality Criteria
 
-- [ ] All 5 sections present in design-plan.md
+- [ ] All 6 sections present in design-plan.md (5 core sections + Section 6: Reference Implementation)
 - [ ] DB Schema Changes reference actual table/model names from domain mapping
 - [ ] API Schema Changes include auth requirements
 - [ ] Service Logic includes business rules from feature-request
 - [ ] Test Plan covers acceptance criteria from feature-request
+- [ ] Reference Implementation points to existing similar feature with concrete file paths
 - [ ] Implementation Files list is realistic (matches sizing criteria)
 - [ ] Risks section identifies at least migration and breaking change risks

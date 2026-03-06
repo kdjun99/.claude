@@ -1,6 +1,6 @@
 ---
 name: spec-pipeline
-description: "Spec pipeline orchestration: PDF analysis → domain mapping → feature-request decomposition → design plans. Coordinates spec-analysis, spec-decomposition-patterns, and spec-design skills. Use with ralph for persistent execution."
+description: "Spec pipeline orchestration: context bootstrap → PDF analysis → domain mapping → feature-request decomposition → design plans. Coordinates spec-analysis, spec-decomposition-patterns, and spec-design skills. Uses context-layer-protocol for layered codebase context. Use with ralph for persistent execution."
 ---
 
 # Spec Pipeline
@@ -98,7 +98,7 @@ Refer to `spec-design` skill for full rules.
 **Process per FR (wave-ordered):**
 1. `oh-my-claudecode:explore` (haiku) — FR-specific codebase exploration
 2. `oh-my-claudecode:analyst` (opus) — requirements analysis
-3. Write `design-plan.md` (5-section format)
+3. Write `design-plan.md` (6-section format, see spec-design skill)
 
 **Parallelism:** Within each wave, run multiple FRs in parallel (up to 5).
 
@@ -160,4 +160,4 @@ Phase 3 완료 후, 각 FR의 design-plan.md를 feature-pipeline으로 전달:
 |-------|------|----------|
 | Analysis | All items classified, groups formed | _spec-analysis.md sections complete |
 | Decomposition | All FRs pass sizing, no circular deps | _requirements.md sizing table all ✓ |
-| Design Plans | All 5 sections present per plan | design-plan.md per FR |
+| Design Plans | All 6 sections present per plan (incl. Reference Implementation) | design-plan.md per FR |

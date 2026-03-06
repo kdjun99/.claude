@@ -96,7 +96,10 @@ Domain 3: 01-application-status-push.md
 | Serverless Lambda | 1 Lambda = 1 feature-request regardless of complexity |
 | Prisma migration only | Foundation with 0 resolvers is valid — size by table count |
 
-**Per-Repo Adjustment:** Refer to the project's repo-structure skill for per-repo sizing adjustments.
+**Per-Repo Adjustment:**
+1. First check project-memory (`project_memory_read` sections: "structure,build"):
+   - If available: use module patterns and build commands from memory (see `context-layer-protocol` Layer 1)
+2. Fallback: Refer to the project's repo-structure skill for per-repo sizing adjustments
 
 ## Dependency Graph Rules
 
@@ -192,6 +195,17 @@ When generating feature-requests, the spec-decomposer MUST reference `_domain-ma
 | Foundation uses DB/ORM | Foundation FRs reference DB Table and ORM Model for schema definitions |
 | Domain uses all three | Domain FRs reference DB Table, ORM Model, and GraphQL Type for resolver/service code |
 | Include Domain Terms section | Each FR includes a `## Domain Terms` section listing the mapping entries it references |
+| Cross-check project-memory | After _domain-mapping.md lookup, cross-check against project-memory domain notes (see `context-layer-protocol`) |
+
+**Multi-Source Entity Resolution:**
+
+1. Look up entity in `_domain-mapping.md` (primary, human-verified)
+2. Cross-check against project-memory domain notes (`project_memory_read` sections: "notes")
+3. Resolution rules:
+   - If found in _domain-mapping.md → use as-is (TRUSTED)
+   - If found in project-memory but NOT in _domain-mapping.md → mark as `PROPOSED [PM]` (machine-discovered, needs verification)
+   - If conflict between sources → _domain-mapping.md takes precedence
+   - If not found anywhere → mark as `(unmapped)` per existing rule
 
 **Example — Foundation FR Technical Details with mapping:**
 

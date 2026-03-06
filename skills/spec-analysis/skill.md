@@ -1,6 +1,6 @@
 ---
 name: spec-analysis
-description: "Rules for analyzing PDF design specs (기획서): checklist extraction, feature grouping, domain term extraction, and 3-tier domain mapping auto-proposal. Use with ralph for persistent execution."
+description: "Rules for analyzing PDF design specs (기획서): checklist extraction, feature grouping, domain term extraction, and 3-tier domain mapping auto-proposal. Uses Layer 1 (project-memory) + Layer 2 stub (DeepWiki DEFERRED). See context-layer-protocol. Use with ralph for persistent execution."
 ---
 
 # Spec Analysis
@@ -84,14 +84,53 @@ Output format: structured markdown with clear sections for each of the 5 areas a
 
 After subagent completes, the orchestrator reads `_spec-analysis-raw.md` (text only) and proceeds to Phase 1B/1C.
 
-## Phase 1B: Codebase Scan (explore, haiku)
+## Phase 1B-pre: Load Cached Context (Layer 1 + Layer 2 stub)
 
-Delegate to `oh-my-claudecode:explore` (haiku):
+See `context-layer-protocol` skill for full layer specifications and context budgets.
+
+### Layer 1: Read project-memory
+
+```
+Read project_memory_read(sections: "techStack,build,conventions,structure,notes")
+```
+
+If project-memory has data (check for "Scan" category note with lastScanned within 7 days):
+- Extract techStack, module patterns, known domain entities from "Domain:" prefixed notes
+- Apply Context Budget: filter to max 2000 tokens (see context-layer-protocol)
+- Pass as `$CACHED_CONTEXT` to the explore agent in Phase 1B
+- This narrows the explore agent's search space significantly
+
+If project-memory is empty or stale (>7 days):
+- Log: "project-memory empty/stale — full codebase scan required"
+- Optionally suggest: "Run codebase-learn first for faster analysis"
+- Proceed to Phase 1B without cached context (existing behavior)
+
+### Layer 2: DeepWiki Availability Stub [DEFERRED]
+
+```
+deepwiki_available = false
+# Full DeepWiki integration deferred until private repo indexing confirmed via Devin MCP.
+# When enabled: try read_wiki_structure(repo: "{github-org}/{repo-name}"); set true on success.
+```
+
+## Phase 1B: Codebase Scan (explore, haiku) — ENHANCED
+
+Delegate to `oh-my-claudecode:explore` (haiku) with additional context:
+
+```
+Task(subagent_type="oh-my-claudecode:explore", model="haiku", prompt="""
+$CACHED_CONTEXT (if available — narrows search scope, max 2000 tokens)
 
 1. Scan Prisma schema files (*.prisma) — extract ALL model names + @@map table names
+   (Skip if already in $CACHED_CONTEXT and lastScanned < 7 days)
 2. Scan for @ObjectType() / @InputType() decorators — extract GraphQL type names
 3. Scan for @Injectable() service classes — extract service names and module paths
 4. Build entity inventory
+5. For each entity found, use ast_grep_search to extract public method signatures:
+   ast_grep_search("@Injectable() class $SERVICE { $$$BODY }")
+   (Structural pattern matching — see context-layer-protocol Layer 3)
+""")
+```
 
 Save to: `_codebase-scan.md`
 
