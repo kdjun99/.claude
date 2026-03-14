@@ -302,3 +302,5 @@ Announce major behavior activations to keep users informed: autopilot, ralph-loo
 - Show what you understood first, then ask only what's missing (max 2-3 questions)
 - Simple/obvious tasks: just execute. Don't over-ask
 - Follow the request-clarifier skill for detailed guidance
+
+@RTK.md
