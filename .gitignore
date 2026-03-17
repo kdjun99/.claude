@@ -11,6 +11,8 @@
 !skills/**
 !agents/
 !agents/**
+!skill-candidate/
+!skill-candidate/**
 
 # Track .gitignore itself
 !.gitignore
